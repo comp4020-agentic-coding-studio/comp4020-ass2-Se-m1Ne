@@ -46,17 +46,18 @@ export const slopCourseMetaSchema = z
 // The code's last three digits were assigned to this repo when it was
 // provisioned, and no other course in the cohort has them. Change the first
 // digit to your course's level (and `level` to match); keep the other three.
-// STARTER_CONTENT: replace this course record, then remove this comment.
 export const courseMeta = slopCourseMetaSchema.parse({
-  code: "SLOP1261",
-  title: "Course Title Goes Here",
+  code: "SLOP2261",
+  title: "Picture Books That Misbehave",
   session: "Semester 1",
   year: 2027,
-  level: 1,
+  level: 2,
   startDate: "2027-02-22",
   endDate: "2027-05-28",
   description:
-    "One concise paragraph explaining what this course is, who it is for, " +
-    "and why somebody would choose to spend a semester taking it.",
-  tags: ["replace me"],
+    "Picture Books That Misbehave is a studio course about what happens when " +
+    "picture books break their usual rules. Students explore visual, textual, " +
+    "spatial, and narrative conventions, then break them with purpose through " +
+    "prototypes, reader testing, and revision. No polished drawing skills required.",
+  tags: ["picture books", "visual storytelling", "narrative design"],
 }) satisfies CourseMetaInput;
