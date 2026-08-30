@@ -7,12 +7,19 @@
  * specificity, so these rules reshape the site without touching any
  * fixed platform file.
  *
- * `.at-nav` and `.at-main`/`.at-footer` read the same theme colour
- * tokens (`--at-bg`, `--at-text`, ...), so each is given its own fixed
- * values here instead: the institutional header stays a deterministic
- * dark, gold-branded surface; the course canvas below it is a
- * deterministic light paper surface. Neither depends on the theme's
- * light/dark toggle, matching the brief's exact palette.
+ * Every semantic colour token the theme defines (`--at-bg`, `--at-text`,
+ * ...) is a `light-dark()` pair by default, so it flips between a light
+ * and a dark value as the theme's own toggle sets `data-theme` on
+ * `<html>`. This site instead commits to one warm-neutral shell in both
+ * theme states: `:root` fixes the tokens to flat warm values (no
+ * `light-dark()`), so nothing here depends on `color-scheme` or
+ * `data-theme`. `.at-nav`, `.at-main` and `.at-footer` each layer a
+ * slightly different warm tone on top of that shared base — outer
+ * shell, header, course canvas — while staying inside the same family.
+ * The nav's brand logo is pinned to its light-background variant for
+ * the same reason: the theme swaps it for a dark-background variant
+ * whenever `data-theme="dark"`, which would read as low-contrast
+ * against a nav that no longer goes dark.
  *
  * One recurring motif is reused everywhere a card or panel appears: a
  * short accent-coloured edge that overshoots the surface's own corner,
@@ -27,20 +34,32 @@
   --course-accent-red: #c94f43;
   --course-accent-blue: #55758b;
   --course-accent-mustard: #c89b3c;
+
+  /* Warm-neutral shell, fixed for both theme states — the outer page
+     background visible beside the header/canvas at wide viewports, and
+     the fallback for anything not more specifically scoped below (e.g.
+     the search dialog). */
+  --at-bg: #e6e0d4;
+  --at-bg-elevated: #faf9f6;
+  --at-text: #25231f;
+  --at-text-secondary: rgb(37 35 31 / 78%);
+  --at-text-muted: rgb(37 35 31 / 58%);
+  --at-border: rgb(37 35 31 / 22%);
+  --at-divider: rgb(37 35 31 / 14%);
 }
 
 /* ---------------------------------------------------------------
-   Institutional header — fixed dark, gold-branded, independent of
-   the site's light/dark toggle and of the course canvas below it.
+   Institutional header — warm/light, fixed for both theme states,
+   visually separated from the shell and the canvas by tone + a
+   hairline rather than a colour jump.
    --------------------------------------------------------------- */
 .at-nav {
-  --at-bg: #171310;
-  --at-bg-elevated: #221c15;
-  --at-text: #f4efe4;
-  --at-text-secondary: rgb(244 239 228 / 78%);
-  --at-text-muted: rgb(244 239 228 / 56%);
-  --at-border: rgb(244 239 228 / 20%);
-  --at-divider: rgb(244 239 228 / 14%);
+  --at-bg: #ece6da;
+  --at-text: #25231f;
+  --at-text-secondary: rgb(37 35 31 / 78%);
+  --at-text-muted: rgb(37 35 31 / 58%);
+  --at-border: rgb(37 35 31 / 22%);
+  --at-divider: rgb(37 35 31 / 16%);
   --at-link: var(--at-primary);
   border-block-end: 1px solid var(--at-divider);
 }
@@ -51,18 +70,43 @@
   text-decoration-thickness: 1px;
 }
 
+/* The header never goes dark, so always show the logo variant drawn
+   for a light background; the dark-background variant the theme swaps
+   in for `data-theme="dark"` would be low-contrast here. */
+.at-nav-logo--has-dark {
+  display: block;
+}
+
+.at-nav-logo--dark {
+  display: none;
+}
+
 /* ---------------------------------------------------------------
-   Course canvas — fixed light paper, independent of the toggle.
+   Course canvas — warm paper, fixed for both theme states.
    --------------------------------------------------------------- */
-.at-main,
-.at-footer {
+.at-main {
   --at-bg: #f4f1ea;
   --at-bg-elevated: #ffffff;
-  --at-text: #191919;
+  --at-text: #25231f;
   --at-text-secondary: #4a473f;
   --at-text-muted: #6e6a60;
   --at-border: #d9d3c2;
   --at-divider: #e3ddce;
+  --at-link: #55758b;
+  background: var(--at-bg);
+  color: var(--at-text);
+}
+
+/* ---------------------------------------------------------------
+   Footer — same warm-neutral family as the header, bookending it.
+   --------------------------------------------------------------- */
+.at-footer {
+  --at-bg: #ece6da;
+  --at-text: #25231f;
+  --at-text-secondary: rgb(37 35 31 / 78%);
+  --at-text-muted: rgb(37 35 31 / 58%);
+  --at-border: rgb(37 35 31 / 22%);
+  --at-divider: rgb(37 35 31 / 16%);
   --at-link: #55758b;
   background: var(--at-bg);
   color: var(--at-text);
