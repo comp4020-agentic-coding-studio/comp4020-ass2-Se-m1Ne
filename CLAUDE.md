@@ -417,6 +417,8 @@ Examples should support the teaching idea rather than substitute for it.
 
 Do not invent external references, books, readings, links, quotes, or factual claims without verifying them.
 
+Do not invent fictional staff, lecturers, tutors, biographies, credentials, or people. This course does not use a People section unless the user later provides real people who need to appear.
+
 ---
 
 ## Process and evidence

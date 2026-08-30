@@ -5,8 +5,6 @@ description:
   time
 week: 2
 date: 2027-03-01
-teachers:
-  - idris-fenn
 spec:
   - work from week 1 is running and can be shown in under two minutes
   - you can name the one decision you are least sure about

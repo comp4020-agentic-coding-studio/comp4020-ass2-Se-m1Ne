@@ -5,8 +5,6 @@ description:
   go looking for the rules underneath it.
 week: 1
 date: 2027-02-22
-teachers:
-  - marisol-quaye
 spec:
   - you bring one familiar picture book to pull apart
   - you have found five implicit rules shaping how it is read
