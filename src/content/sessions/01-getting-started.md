@@ -1,36 +1,55 @@
 ---
-title: Getting started
+title: How Should a Picture Book Behave?
 description:
-  The first session of the semester — what to have working before you arrive,
-  and what happens once you do
+  What a picture book seems to do without trying — and what happens once you
+  go looking for the rules underneath it.
 week: 1
 date: 2027-02-22
 teachers:
   - marisol-quaye
 spec:
-  - your development environment runs the course's toolchain
-  - you can build and preview the site locally
-  - you have something, however rough, to show the class
+  - you bring one familiar picture book to pull apart
+  - you have found five implicit rules shaping how it is read
+  - you have one rough alternative spread breaking one of those rules
+  - you have completed this week's Misbehaviour, Find a Rule
 ---
-
-<!-- STARTER_CONTENT: replace this session, then remove this comment. -->
-
-Replace this page. A session brief tells a student three things: what to bring,
-what will happen, and how to tell afterwards whether it went well.
 
 ## Before the session
 
-The `spec` above is the contract. Write each line so a reader can tell whether
-it has been met without asking you --- that is the difference between a spec and
-a wish.
+Bring one picture book you know well — yours, a sibling's, a library one.
+Anything with pages and pictures works; you are not judged on the book, only
+on what you notice about it.
 
-## In the session
+## Rule Hunt
 
-Say how the time is actually spent, in the order it happens. If the session runs
-to a repeating shape --- a demo, then feedback, then work time --- name the
-parts and say roughly how long each takes. Students plan against it.
+This is the main studio activity. Working from the book you brought:
+
+- find at least five implicit rules that shape how it is read — not written
+  rules, the ones nobody states because every reader already follows them;
+- choose one of those five;
+- make one rough alternative spread showing what happens when that rule
+  disappears or changes.
+
+The spread is exploratory, not polished. A sketch, a mock-up, a page with
+words crossed out and rewritten — anything that shows the rule breaking and
+what happens as a result.
+
+## This Week's Misbehaviour — Find a Rule
+
+A smaller, separate exercise from Rule Hunt, done in 15–30 minutes:
+
+- notice one usually invisible convention in a picture book — it does not
+  need to be one of your five from Rule Hunt;
+- write down, in one sentence, what the convention is;
+- briefly test what changes if you interrupt it — cover a word, read a spread
+  right-to-left, skip a page turn, anything quick.
+
+Keep the note short. The point is noticing something you would normally read
+straight past, not solving it.
 
 ## Afterwards
 
-Say what leaves the session: a mark, a piece of feedback, a decision about the
-next week's work.
+Your alternative spread and your Find a Rule note are the first two entries
+in your Misbehaviour Toolbox — keep both. Next week starts from the same
+book: whether the picture on the page is really showing you what you think
+it is.
