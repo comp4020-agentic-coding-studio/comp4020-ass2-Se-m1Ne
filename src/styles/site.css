@@ -1,0 +1,255 @@
+/* Picture Books That Misbehave — course visual identity.
+ *
+ * Deliberately unlayered: astro-theme-university's own tokens and
+ * component rules live in `@layer at.tokens` / `@layer at.components`
+ * (see astro-theme-university/styles/*.css), and an unlayered normal
+ * declaration always wins over a layered one regardless of source
+ * order or specificity. This is the same mechanism the theme's own
+ * `brandCss` option relies on for palette overrides, so these rules
+ * reshape the site without touching fixed platform files.
+ *
+ * Direction: restrained editorial picture book / experimental print /
+ * controlled misbehaviour. Colour stays inside the existing SlopU gold
+ * (--at-primary) and bronze (--at-secondary) brand tokens; every rule
+ * below reads them rather than hardcoding a new palette, so dark mode
+ * keeps working for free.
+ */
+
+:root {
+  /* Editorial display face for major headings only, system-only (no
+     font request). Body copy stays on the theme's Public Sans. */
+  --course-font-display:
+    ui-serif, "Iowan Old Style", "Palatino Linotype", palatino, "Book Antiqua", georgia, serif;
+
+  /* A narrower measure and squarer geometry than the starter's
+     dashboard defaults. 44rem still leaves headroom above the ~41.5rem
+     a two-column card grid needs to stay two columns. */
+  --at-content-width: 44rem;
+  --at-border-radius: 0.125rem;
+}
+
+/* ---------------------------------------------------------------
+   Type — stronger hierarchy, editorial display face on major headings
+   --------------------------------------------------------------- */
+
+h1,
+.at-hero-title {
+  font-family: var(--course-font-display);
+  font-weight: 500;
+}
+
+/* Plain (non-hero) page headings get the hero's own hairline-rule
+   habit, so a page without a hero image still opens like a page turn. */
+.at-main > h1:first-child {
+  padding-block-end: var(--at-spacing-sm);
+  border-block-end: 1px solid var(--at-divider);
+  margin-block-end: var(--at-spacing-lg);
+}
+
+/* ---------------------------------------------------------------
+   Nav — a quiet frame rather than a floating bar
+   --------------------------------------------------------------- */
+
+.at-nav {
+  border-block-end: 1px solid var(--at-divider);
+}
+
+.at-nav-links a[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
+}
+
+/* ---------------------------------------------------------------
+   Cards — quieter, print-like, no SaaS lift
+   --------------------------------------------------------------- */
+
+.at-card {
+  border-radius: 0;
+}
+
+a.at-card:hover {
+  box-shadow: none;
+  border-color: var(--at-accent);
+}
+
+a.at-card:hover .at-card-image {
+  transform: none;
+}
+
+/* The small metadata line under a card title (week number, lecture
+   week, due date) reads as a caption rather than a second sentence. */
+.at-card-body > p > small {
+  display: block;
+  margin-block-start: var(--at-spacing-xs);
+  font-size: var(--at-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--at-text-muted);
+}
+
+/* Weeks, Lectures and Assessment share the same card shape but each
+   carries a different hairline rule, so the three listings stay
+   distinguishable from each other at a glance. */
+.weeks-grid .at-card {
+  border-block-start: 3px solid var(--at-primary);
+}
+
+.lectures-grid .at-card {
+  border-inline-start: 3px solid var(--at-secondary);
+}
+
+.assessment-grid .at-card {
+  border-block-start: 3px solid var(--at-tertiary);
+}
+
+.assessment-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--at-spacing-sm);
+}
+
+.assessment-meta small {
+  margin-block-start: 0;
+}
+
+.weight-badge {
+  flex-shrink: 0;
+  font-family: var(--course-font-display);
+  font-size: var(--at-font-size-sm);
+  font-weight: 600;
+  padding: 0.0625rem 0.5rem;
+  border: 1px solid var(--at-divider);
+  color: var(--at-text);
+}
+
+/* ---------------------------------------------------------------
+   Homepage — cover / opening-spread treatment
+   --------------------------------------------------------------- */
+
+.course-home .course-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--at-spacing-sm);
+  margin-block: 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.course-home .course-tags li {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--at-divider);
+  color: var(--at-text-secondary);
+  font-size: var(--at-font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* The central question, set off like a pull quote rather than a bold
+   paragraph — a deliberate, small asymmetry against the surrounding
+   prose rhythm. */
+.course-question {
+  font-family: var(--course-font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.2rem, 1.1rem + 1vw, 1.6rem);
+  line-height: 1.4;
+  max-inline-size: 30ch;
+  margin-block: var(--at-spacing-xl);
+  padding-inline-start: var(--at-spacing-lg);
+  border-inline-start: 3px solid var(--at-primary);
+}
+
+/* The learning progression as a sequence of steps rather than a bold
+   sentence — each step numbered, connected by a quiet arrow. */
+.course-progression {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em 0;
+  margin: 0 0 var(--at-spacing-xl);
+  padding: 0;
+  list-style: none;
+  font-family: var(--course-font-display);
+  font-size: 1.0625rem;
+}
+
+.course-progression li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+}
+
+.course-progression li:not(:last-child)::after {
+  content: "→";
+  margin-inline-start: 0.75em;
+  color: var(--at-text-muted);
+  font-family: var(--at-font-body);
+}
+
+.course-progression .step-index {
+  font-size: var(--at-font-size-xs);
+  font-family: var(--at-font-mono);
+  color: var(--at-text-muted);
+}
+
+/* The four entry-point cards read as an index/contents list rather
+   than a grid of product tiles: numbered, unboxed, rule-divided. */
+.course-index-grid {
+  counter-reset: chapter;
+}
+
+.course-index-grid .at-card {
+  counter-increment: chapter;
+  border: none;
+  border-block-start: 1px solid var(--at-divider);
+}
+
+.course-index-grid .at-card-body {
+  padding-inline: 0;
+}
+
+.course-index-grid .at-card-title {
+  font-family: var(--course-font-display);
+  font-weight: 500;
+  font-size: 1.25rem;
+}
+
+.course-index-grid .at-card-title::before {
+  content: counter(chapter, decimal-leading-zero) "  ";
+  color: var(--at-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+a.course-index-grid .at-card:hover,
+.course-index-grid a.at-card:hover {
+  background: none;
+  border-color: var(--at-divider);
+}
+
+.course-index-grid a.at-card:hover .at-card-title {
+  color: var(--at-accent);
+}
+
+/* ---------------------------------------------------------------
+   Showcase — a deliberate, finished-looking empty state
+   --------------------------------------------------------------- */
+
+.showcase-empty {
+  margin-block-start: var(--at-spacing-xl);
+  padding: var(--at-spacing-2xl) var(--at-spacing-xl);
+  border: 1px dashed var(--at-divider);
+  text-align: center;
+}
+
+.showcase-empty p {
+  max-inline-size: 34ch;
+  margin-inline: auto;
+}
+
+.showcase-empty__note {
+  margin-block-start: var(--at-spacing-md);
+  font-family: var(--course-font-display);
+  font-style: italic;
+  color: var(--at-text-muted);
+}

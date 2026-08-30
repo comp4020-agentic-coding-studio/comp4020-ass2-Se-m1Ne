@@ -6,6 +6,7 @@ import SpecList from "astro-course-university/components/SpecList.astro";
 import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
 import TeachingTeam from "../../components/TeachingTeam.astro";
 import { graphCollections, sessionLabels, siteConfig } from "../../site-config";
+import "../../styles/site.css";
 
 export async function getStaticPaths() {
   const sessions = await getPublishedCollection("sessions");

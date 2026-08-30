@@ -5,6 +5,9 @@ import ContentLayout from "astro-theme-university/layouts/ContentLayout.astro";
 import heroImage from "../assets/images/hero-home.avif";
 import { courseMeta } from "../course-config";
 import { sessionLabels, siteConfig } from "../site-config";
+import "../styles/site.css";
+
+const progression = ["Notice", "Break", "Construct", "Test", "Integrate"];
 ---
 
 <ContentLayout
@@ -14,58 +17,51 @@ import { sessionLabels, siteConfig } from "../site-config";
   heroImageAlt="A lecture theatre reduced to flat gold and black shapes, rows of seats sweeping past the frame, in a two-ink risograph print"
   {...siteConfig}
 >
-  <ul class="course-tags" aria-label="Course tags">
-    {courseMeta.tags.map((tag) => <li>{tag}</li>)}
-  </ul>
+  <div class="course-home">
+    <ul class="course-tags" aria-label="Course tags">
+      {courseMeta.tags.map((tag) => <li>{tag}</li>)}
+    </ul>
 
-  <p><strong>What happens when a picture book refuses to behave like a normal book?</strong></p>
+    <p class="course-question">
+      What happens when a picture book refuses to behave like a normal book?
+    </p>
 
-  <p>{courseMeta.description}</p>
+    <p>{courseMeta.description}</p>
 
-  <h2>How the studio works</h2>
-  <p><strong>Notice → Break → Construct → Test → Integrate</strong></p>
-  <p>
-    Every week takes one convention of picture books — a rule about pictures,
-    words, sequence, page turns, or the physical page — and follows it
-    through a fixed progression: <strong>Notice</strong> the rule,
-    <strong>Break</strong> it on purpose, <strong>Construct</strong> something
-    from the break, <strong>Test</strong> it on a reader, then decide whether
-    to <strong>Integrate</strong> it into your own work. A rule is never
-    broken just for novelty — each break has to do something to the reader.
-  </p>
+    <h2>How the studio works</h2>
+    <ol class="course-progression">
+      {progression.map((step, i) => (
+        <li>
+          <span class="step-index">{String(i + 1).padStart(2, "0")}</span>
+          {step}
+        </li>
+      ))}
+    </ol>
+    <p>
+      Every week takes one convention of picture books — a rule about
+      pictures, words, sequence, page turns, or the physical page — and
+      follows it through this fixed progression: notice the rule, break it on
+      purpose, construct something from the break, test it on a reader, then
+      decide whether to integrate it into your own work. A rule is never
+      broken just for novelty — each break has to do something to the reader.
+    </p>
 
-  <h2>Where to go next</h2>
-  <CardGrid columns={2}>
-    <Card title={sessionLabels.plural} href="/sessions/">
-      <p>The twelve-week schedule and what happens in each week.</p>
-    </Card>
-    <Card title="Lectures" href="/lectures/">
-      <p>What is covered, week by week, and which topics each lecture draws on.</p>
-    </Card>
-    <Card title="Assessment" href="/assessments/">
-      <p>What is marked, what it is worth, and when it is due.</p>
-    </Card>
-    <Card title="Showcase" href="/showcase/">
-      <p>Where student work will appear once it has been produced.</p>
-    </Card>
-  </CardGrid>
+    <h2>Where to go next</h2>
+    <div class="course-index-grid">
+      <CardGrid columns={2}>
+        <Card title={sessionLabels.plural} href="/sessions/">
+          <p>The twelve-week schedule and what happens in each week.</p>
+        </Card>
+        <Card title="Lectures" href="/lectures/">
+          <p>What is covered, week by week, and which topics each lecture draws on.</p>
+        </Card>
+        <Card title="Assessment" href="/assessments/">
+          <p>What is marked, what it is worth, and when it is due.</p>
+        </Card>
+        <Card title="Showcase" href="/showcase/">
+          <p>Where student work will appear once it has been produced.</p>
+        </Card>
+      </CardGrid>
+    </div>
+  </div>
 </ContentLayout>
-
-<style>
-  .course-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-block: 0 2rem;
-    padding: 0;
-    list-style: none;
-  }
-
-  .course-tags li {
-    padding: 0.25rem 0.65rem;
-    border-radius: 999px;
-    color: var(--at-text-secondary);
-    background: var(--at-bg-alt);
-    font-size: 0.9rem;
-  }
-</style>
