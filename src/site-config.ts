@@ -11,10 +11,7 @@ export const sessionLabels = {
 
 export const graphCollections = ["sessions", "assessments", "lectures", "people"];
 
-export const courseApiCollections = [
-  ...graphCollections.map((key) => ({ key })),
-  { key: "policies", dir: "pages/policies" },
-];
+export const courseApiCollections = graphCollections.map((key) => ({ key }));
 
 export const siteConfig = defineSiteConfig({
   ...slopBranding,
@@ -24,7 +21,6 @@ export const siteConfig = defineSiteConfig({
     { text: "Lectures", href: "/lectures/" },
     { text: sessionLabels.plural, href: "/sessions/" },
     { text: "Assessment", href: "/assessments/" },
-    { text: "Policies", href: "/policies/" },
   ],
 
   licence: "CC-BY-NC-SA-4.0",

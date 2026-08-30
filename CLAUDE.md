@@ -388,8 +388,10 @@ The site must include:
 * exactly twelve dated teaching weeks;
 * assessment information whose weights sum to 100%;
 * at least one real linked lecture deck;
-* clear course information and policies required by the starter and brief;
+* clear course information required by the starter and brief;
 * content specific enough to demonstrate that this is a genuinely designed course rather than starter text with nouns replaced.
+
+A Policies page is optional for this course. Do not invent one to fill the template; only add it if the user later decides there is a real, course-specific reason for one.
 
 Where the starter platform already provides required structure or components, use them rather than rebuilding the platform.
 
