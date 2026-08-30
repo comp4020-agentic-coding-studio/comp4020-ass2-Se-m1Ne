@@ -4,20 +4,20 @@ import { withBase } from "astro-theme-university/url";
 
 const sessions = await getPublishedCollection("sessions");
 const visible = sessions.sort((a, b) => a.data.week - b.data.week);
+const accents = ["red", "blue", "mustard"];
 ---
 
-<ol class="index-list">
+<div class="card-grid">
   {
-    visible.map((session) => (
-      <li>
-        <a href={withBase(`/sessions/${session.id}/`)}>
-          <span class="index-list__num">{String(session.data.week).padStart(2, "0")}</span>
-          <span class="index-list__body">
-            <span class="index-list__title">{session.data.title}</span>
-            {session.data.description && <span class="index-list__desc">{session.data.description}</span>}
-          </span>
-        </a>
-      </li>
+    visible.map((session, index) => (
+      <a class={`course-card course-card--${accents[index % accents.length]}`} href={withBase(`/sessions/${session.id}/`)}>
+        <span class="course-card__num">Week {String(session.data.week).padStart(2, "0")}</span>
+        <span class="course-card__title">{session.data.title}</span>
+        {session.data.description && <span class="course-card__desc">{session.data.description}</span>}
+        <span class="course-card__arrow" aria-hidden="true">
+          →
+        </span>
+      </a>
     ))
   }
-</ol>
+</div>

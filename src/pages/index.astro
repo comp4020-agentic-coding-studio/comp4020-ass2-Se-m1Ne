@@ -5,50 +5,69 @@ import { courseMeta } from "../course-config";
 import { sessionLabels, siteConfig } from "../site-config";
 import "../styles/site.css";
 
-const progression = ["Notice", "Break", "Construct", "Test", "Integrate"];
+const progression = [
+  { num: "01", step: "Notice" },
+  { num: "02", step: "Break" },
+  { num: "03", step: "Construct" },
+  { num: "04", step: "Test" },
+  { num: "05", step: "Integrate" },
+];
 
 const entries = [
   {
     title: sessionLabels.plural,
     href: "/sessions/",
     description: "The twelve-week schedule and what happens in each week.",
+    accent: "red",
   },
   {
     title: "Lectures",
     href: "/lectures/",
     description: "What is covered, week by week, and which topics each lecture draws on.",
+    accent: "blue",
   },
   {
     title: "Assessment",
     href: "/assessments/",
     description: "What is marked, what it is worth, and when it is due.",
+    accent: "mustard",
   },
   {
     title: "Showcase",
     href: "/showcase/",
     description: "Where student work will appear once it has been produced.",
+    accent: "red",
   },
 ];
 ---
 
-<BaseLayout
-  title={courseMeta.title}
-  description="Breaking the Rules of Visual Storytelling"
-  {...siteConfig}
->
-  <p class="course-kicker">
-    {courseMeta.code} · {courseMeta.session}, {courseMeta.year}
-  </p>
-  <h1>{courseMeta.title}</h1>
-  <p class="lead">Breaking the Rules of Visual Storytelling</p>
+<BaseLayout title={courseMeta.title} description="Breaking the Rules of Visual Storytelling" {...siteConfig}>
+  <div class="home-hero">
+    <div class="home-hero__intro">
+      <p class="course-kicker">
+        {courseMeta.code} · {courseMeta.session}, {courseMeta.year}
+      </p>
+      <h1>{courseMeta.title}</h1>
+      <p class="lead">Breaking the Rules of Visual Storytelling</p>
+      <p>{courseMeta.description}</p>
+    </div>
 
-  <blockquote class="course-question">
-    <p>What happens when a picture book refuses to behave like a normal book?</p>
-  </blockquote>
+    <div class="home-hero__question">
+      <span class="home-hero__question-label">The Question</span>
+      <p>What happens when a picture book refuses to behave like a normal book?</p>
+    </div>
+  </div>
 
-  <p>{courseMeta.description}</p>
-
-  <p class="course-progression">{progression.join(" → ")}</p>
+  <ol class="progression">
+    {
+      progression.map((p) => (
+        <li>
+          <span class="progression__num">{p.num}</span>
+          {p.step}
+        </li>
+      ))
+    }
+  </ol>
   <p>
     Every week takes one convention of picture books — a rule about pictures,
     words, sequence, page turns, or the physical page — and follows it
@@ -59,19 +78,18 @@ const entries = [
   </p>
 
   <h2>Where to go next</h2>
-  <ol class="index-list">
+  <div class="home-entries">
     {
       entries.map((entry, index) => (
-        <li>
-          <a href={withBase(entry.href)}>
-            <span class="index-list__num">{String(index + 1).padStart(2, "0")}</span>
-            <span class="index-list__body">
-              <span class="index-list__title">{entry.title}</span>
-              <span class="index-list__desc">{entry.description}</span>
-            </span>
-          </a>
-        </li>
+        <a class={`course-card course-card--${entry.accent}`} href={withBase(entry.href)}>
+          <span class="course-card__num">{String(index + 1).padStart(2, "0")}</span>
+          <span class="course-card__title">{entry.title}</span>
+          <span class="course-card__desc">{entry.description}</span>
+          <span class="course-card__arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
       ))
     }
-  </ol>
+  </div>
 </BaseLayout>

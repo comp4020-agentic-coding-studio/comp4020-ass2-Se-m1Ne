@@ -6,19 +6,20 @@ const lectures = await getPublishedCollection("lectures");
 const visible = lectures.sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
 ---
 
-<ol class="index-list">
+<div class="lecture-list">
   {
     visible.map((lecture) => (
-      <li>
-        <a href={withBase(`/lectures/${lecture.id}/`)}>
-          <span class="index-list__num">{String(lecture.data.week).padStart(2, "0")}</span>
-          <span class="index-list__body">
-            <span class="index-list__title">{lecture.data.title}</span>
-            {lecture.data.description && <span class="index-list__desc">{lecture.data.description}</span>}
-          </span>
-          {lecture.data.slides && <span class="index-list__meta">Slides</span>}
-        </a>
-      </li>
+      <a class="course-card course-card--row course-card--blue" href={withBase(`/lectures/${lecture.id}/`)}>
+        <span class="course-card__num">Week {String(lecture.data.week).padStart(2, "0")}</span>
+        <span class="course-card__body">
+          <span class="course-card__title">{lecture.data.title}</span>
+          {lecture.data.description && <span class="course-card__desc">{lecture.data.description}</span>}
+        </span>
+        {lecture.data.slides && <span class="course-card__meta">Slides</span>}
+        <span class="course-card__arrow" aria-hidden="true">
+          →
+        </span>
+      </a>
     ))
   }
-</ol>
+</div>

@@ -1,30 +1,47 @@
-/* Picture Books That Misbehave — course visual identity.
+/* Picture Books That Misbehave — "Modern Picture-Book Studio" course
+ * visual system.
  *
- * Deliberately unlayered: astro-theme-university's own tokens and
- * component rules live in `@layer at.tokens` / `@layer at.components`
- * (see astro-theme-university/styles/*.css), and an unlayered normal
- * declaration always wins over a layered one regardless of source
- * order or specificity. This is the same mechanism the theme's own
- * `brandCss` option relies on for palette overrides, so these rules
- * reshape the site without touching fixed platform files.
+ * Unlayered on purpose (see astro-theme-university's own
+ * @layer at.tokens / at.base / at.components): an unlayered declaration
+ * always wins over a layered one regardless of source order or
+ * specificity, so these rules reshape the site without touching any
+ * fixed platform file.
  *
- * Kept deliberately small: the course's identity comes from page
- * composition (see src/pages/index.astro and the *Grid components),
- * not from overriding the theme's own typography or component shapes.
- * The theme already carries a page-edge accent rule (`body::after`)
- * and a restrained pull-quote treatment (`blockquote`) — both reused
- * as-is rather than re-invented here.
+ * `.at-nav` and `.at-main`/`.at-footer` read the same theme colour
+ * tokens (`--at-bg`, `--at-text`, ...), so each is given its own fixed
+ * values here instead: the institutional header stays a deterministic
+ * dark, gold-branded surface; the course canvas below it is a
+ * deterministic light paper surface. Neither depends on the theme's
+ * light/dark toggle, matching the brief's exact palette.
+ *
+ * One recurring motif is reused everywhere a card or panel appears: a
+ * short accent-coloured edge that overshoots the surface's own corner,
+ * a page refusing to sit flush inside its frame.
  */
 
 :root {
-  /* A slightly narrower measure than the starter's dashboard-width
-     default, closer to a printed page column. */
-  --at-content-width: 44rem;
+  /* Wide enough for a two-column hero and 3-up card grids at desktop
+     widths, while `.at-main p`/`li` below cap the reading measure. */
+  --at-content-width: 72rem;
+
+  --course-accent-red: #c94f43;
+  --course-accent-blue: #55758b;
+  --course-accent-mustard: #c89b3c;
 }
 
-/* A quiet frame under the sticky nav, and a clear (not loud) current-page
-   marker — both reversible, neither changes the theme's own colours. */
+/* ---------------------------------------------------------------
+   Institutional header — fixed dark, gold-branded, independent of
+   the site's light/dark toggle and of the course canvas below it.
+   --------------------------------------------------------------- */
 .at-nav {
+  --at-bg: #171310;
+  --at-bg-elevated: #221c15;
+  --at-text: #f4efe4;
+  --at-text-secondary: rgb(244 239 228 / 78%);
+  --at-text-muted: rgb(244 239 228 / 56%);
+  --at-border: rgb(244 239 228 / 20%);
+  --at-divider: rgb(244 239 228 / 14%);
+  --at-link: var(--at-primary);
   border-block-end: 1px solid var(--at-divider);
 }
 
@@ -34,16 +51,34 @@
   text-decoration-thickness: 1px;
 }
 
-/* The one recurring motif: every page opens with a hairline rule under
-   its title, echoing a page turn without adding any colour or weight. */
+/* ---------------------------------------------------------------
+   Course canvas — fixed light paper, independent of the toggle.
+   --------------------------------------------------------------- */
+.at-main,
+.at-footer {
+  --at-bg: #f4f1ea;
+  --at-bg-elevated: #ffffff;
+  --at-text: #191919;
+  --at-text-secondary: #4a473f;
+  --at-text-muted: #6e6a60;
+  --at-border: #d9d3c2;
+  --at-divider: #e3ddce;
+  --at-link: #55758b;
+  background: var(--at-bg);
+  color: var(--at-text);
+}
+
+/* The one recurring motif on plain prose pages: a hairline under the
+   title, echoing a page turn without adding colour or weight. */
 .at-main > h1 {
   padding-block-end: var(--at-spacing-sm);
   border-block-end: 1px solid var(--at-divider);
 }
 
-/* ---------------------------------------------------------------
-   Homepage
-   --------------------------------------------------------------- */
+.at-main p,
+.at-main li {
+  max-inline-size: 68ch;
+}
 
 .course-kicker {
   margin-block-end: 0;
@@ -52,130 +87,295 @@
   color: var(--at-text-muted);
 }
 
-.course-question {
-  max-inline-size: 32ch;
-  font-size: 1.375rem;
+/* ---------------------------------------------------------------
+   Homepage hero — two-column composition on desktop.
+   --------------------------------------------------------------- */
+
+.home-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: var(--at-spacing-xl);
+  margin-block-end: var(--at-spacing-xl);
 }
 
-.course-progression {
-  font-size: 1.0625rem;
+@media (width >= 900px) {
+  .home-hero {
+    grid-template-columns: 1.3fr 1fr;
+    gap: var(--at-spacing-2xl);
+  }
+}
+
+.home-hero__question {
+  position: relative;
+  background: var(--at-bg-elevated);
+  border: 1px solid var(--at-border);
+  border-radius: 6px;
+  padding: var(--at-spacing-lg);
+}
+
+.home-hero__question::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: var(--at-spacing-md);
+  width: 28px;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--course-accent-blue);
+}
+
+.home-hero__question-label {
+  display: block;
+  font-size: var(--at-font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--course-accent-blue);
+  margin-block-end: var(--at-spacing-sm);
+}
+
+.home-hero__question p {
+  margin: 0;
+  max-inline-size: none;
+  font-size: 1.25rem;
   font-weight: 600;
+  line-height: 1.35;
 }
 
 /* ---------------------------------------------------------------
-   Index lists — Weeks, Lectures, Assessment, homepage contents.
-   A flat, rule-divided list reads as a table of contents rather
-   than a grid of product cards.
+   Learning progression — a designed horizontal sequence.
    --------------------------------------------------------------- */
 
-.index-list {
+.progression {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--at-spacing-sm) var(--at-spacing-md);
   list-style: none;
-  margin: var(--at-spacing-lg) 0 var(--at-spacing-xl);
-  padding: 0;
-  border-block-start: 1px solid var(--at-divider);
+  margin: var(--at-spacing-lg) 0;
+  padding: var(--at-spacing-md) 0;
+  border-block: 1px solid var(--at-divider);
 }
 
-.index-list li {
-  border-block-end: 1px solid var(--at-divider);
-}
-
-.index-list a {
+.progression li {
   display: flex;
   align-items: baseline;
-  gap: var(--at-spacing-md);
-  padding-block: var(--at-spacing-md);
+  gap: 0.4em;
+  font-weight: 600;
+}
+
+.progression li:not(:last-child)::after {
+  content: "→";
+  margin-inline-start: var(--at-spacing-sm);
+  font-weight: 400;
+  color: var(--at-text-muted);
+}
+
+.progression__num {
+  font-size: var(--at-font-size-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--course-accent-mustard);
+}
+
+/* ---------------------------------------------------------------
+   Course card system — Weeks, Lectures, Assessment, homepage entries.
+   White surface, thin border, small radius, no shadow, one small
+   accent edge that overshoots the top-left corner.
+   --------------------------------------------------------------- */
+
+.course-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+  background: var(--at-bg-elevated);
+  border: 1px solid var(--at-border);
+  border-radius: 6px;
+  padding: var(--at-spacing-lg);
   color: inherit;
   text-decoration: none;
 }
 
-.index-list__num {
-  flex: none;
-  width: 2ch;
-  font-variant-numeric: tabular-nums;
+.course-card::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: var(--at-spacing-md);
+  width: 28px;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--course-card-accent, var(--course-accent-mustard));
+}
+
+.course-card--red {
+  --course-card-accent: var(--course-accent-red);
+}
+
+.course-card--blue {
+  --course-card-accent: var(--course-accent-blue);
+}
+
+.course-card--mustard {
+  --course-card-accent: var(--course-accent-mustard);
+}
+
+.course-card__num {
   font-size: var(--at-font-size-sm);
-  color: var(--at-text-muted);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--course-card-accent, var(--course-accent-mustard));
 }
 
-.index-list__body {
-  flex: 1 1 auto;
-  min-width: 0;
+.course-card__header {
   display: flex;
-  flex-direction: column;
-  gap: 0.15em;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--at-spacing-sm);
 }
 
-.index-list__title {
+.course-card__title {
+  font-size: 1.0625rem;
   font-weight: 600;
   color: var(--at-text);
 }
 
-.index-list__desc {
+.course-card__desc {
+  max-inline-size: none;
   font-size: var(--at-font-size-sm);
   color: var(--at-text-secondary);
 }
 
-.index-list__meta,
-.index-list__stat {
-  flex: none;
-  margin-inline-start: auto;
-  padding-inline-start: var(--at-spacing-md);
+.course-card__meta {
   font-size: var(--at-font-size-sm);
   color: var(--at-text-muted);
-  text-align: end;
-  white-space: nowrap;
 }
 
-.index-list__stat {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.1em;
-  white-space: normal;
-}
-
-.index-list__weight {
-  font-size: 1.0625rem;
+.course-card__weight {
+  flex: none;
+  font-size: 1.375rem;
   font-weight: 700;
   color: var(--at-text);
 }
 
-.index-list a:hover .index-list__title,
-.index-list a:focus-visible .index-list__title {
-  color: var(--at-link);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+.course-card__arrow {
+  margin-block-start: auto;
+  font-size: var(--at-font-size-sm);
+  color: var(--at-text-muted);
+}
+
+a.course-card:hover,
+a.course-card:focus-visible {
+  border-color: var(--course-card-accent, var(--course-accent-mustard));
+}
+
+a.course-card:hover .course-card__title,
+a.course-card:focus-visible .course-card__title,
+a.course-card:hover .course-card__arrow,
+a.course-card:focus-visible .course-card__arrow {
+  color: var(--course-card-accent, var(--course-accent-mustard));
+}
+
+a.course-card:focus-visible {
+  outline: 2px solid var(--course-card-accent, var(--course-accent-mustard));
+  outline-offset: 2px;
+}
+
+/* Row variant — Lectures: a small distinction from the block-shaped
+   Weeks cards, prioritising week, title and the deck link in a line. */
+.course-card--row {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--at-spacing-md);
+}
+
+.course-card--row .course-card__num {
+  flex: none;
+  width: 7ch;
+}
+
+.course-card--row .course-card__body {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.15em;
+}
+
+.course-card--row .course-card__meta,
+.course-card--row .course-card__arrow {
+  flex: none;
+  margin-block-start: 0;
 }
 
 @media (width < 640px) {
-  .index-list a {
+  .course-card--row {
     flex-wrap: wrap;
   }
 
-  .index-list__meta,
-  .index-list__stat {
+  .course-card--row .course-card__body {
     flex-basis: 100%;
-    margin-inline-start: calc(2ch + var(--at-spacing-md));
-    padding-inline-start: 0;
-    text-align: start;
-    white-space: normal;
   }
+}
 
-  .index-list__stat {
-    align-items: flex-start;
-  }
+/* Static variant — a card that isn't a link (the Showcase frame). */
+.course-card--static {
+  align-items: center;
+  max-inline-size: 40ch;
+  margin-inline: auto;
+  padding: var(--at-spacing-2xl) var(--at-spacing-lg);
+  text-align: center;
+}
+
+.course-card--static p {
+  max-inline-size: none;
+  margin: 0;
+}
+
+.course-card--static p:last-child {
+  color: var(--at-text-muted);
 }
 
 /* ---------------------------------------------------------------
-   Showcase — a quiet, deliberate empty state
+   Grids — responsive layouts built from .course-card.
    --------------------------------------------------------------- */
 
-.showcase-empty {
-  max-inline-size: 40ch;
-  margin-block-start: var(--at-spacing-xl);
-  padding-block-start: var(--at-spacing-lg);
-  border-block-start: 1px solid var(--at-divider);
+.home-entries {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--at-spacing-lg);
+  margin-block-end: var(--at-spacing-xl);
 }
 
-.showcase-empty p:last-child {
-  color: var(--at-text-muted);
+@media (width >= 640px) {
+  .home-entries {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--at-spacing-lg);
+  margin: var(--at-spacing-lg) 0 var(--at-spacing-xl);
+}
+
+@media (width >= 640px) {
+  .card-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (width >= 1000px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.lecture-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--at-spacing-md);
+  margin: var(--at-spacing-lg) 0 var(--at-spacing-xl);
 }

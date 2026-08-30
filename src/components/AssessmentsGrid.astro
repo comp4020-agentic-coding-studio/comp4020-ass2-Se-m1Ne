@@ -7,27 +7,26 @@ const assessments = await getPublishedCollection("assessments");
 const visible = assessments.sort((a, b) => a.data.week - b.data.week);
 ---
 
-<ol class="index-list">
+<div class="card-grid">
   {
     visible.map((assessment, index) => (
-      <li>
-        <a href={withBase(`/assessments/${assessment.id}/`)}>
-          <span class="index-list__num">{String(index + 1).padStart(2, "0")}</span>
-          <span class="index-list__body">
-            <span class="index-list__title">{assessment.data.title}</span>
-            {assessment.data.description && <span class="index-list__desc">{assessment.data.description}</span>}
+      <a class="course-card course-card--mustard" href={withBase(`/assessments/${assessment.id}/`)}>
+        <span class="course-card__header">
+          <span class="course-card__num">Assessment {String(index + 1).padStart(2, "0")}</span>
+          {assessment.data.weight != null && <span class="course-card__weight">{assessment.data.weight}%</span>}
+        </span>
+        <span class="course-card__title">{assessment.data.title}</span>
+        {assessment.data.description && <span class="course-card__desc">{assessment.data.description}</span>}
+        {assessment.data.weight != null && (
+          <span class="course-card__meta">
+            Due {formatCourseDate(assessment.data.due)}
+            {assessment.data.draft && " · Draft"}
           </span>
-          {assessment.data.weight != null && (
-            <span class="index-list__stat">
-              <strong class="index-list__weight">{assessment.data.weight}%</strong>
-              <span class="index-list__due">
-                Due {formatCourseDate(assessment.data.due)}
-                {assessment.data.draft && " · Draft"}
-              </span>
-            </span>
-          )}
-        </a>
-      </li>
+        )}
+        <span class="course-card__arrow" aria-hidden="true">
+          →
+        </span>
+      </a>
     ))
   }
-</ol>
+</div>
