@@ -8,48 +8,22 @@
  * `brandCss` option relies on for palette overrides, so these rules
  * reshape the site without touching fixed platform files.
  *
- * Direction: restrained editorial picture book / experimental print /
- * controlled misbehaviour. Colour stays inside the existing SlopU gold
- * (--at-primary) and bronze (--at-secondary) brand tokens; every rule
- * below reads them rather than hardcoding a new palette, so dark mode
- * keeps working for free.
+ * Kept deliberately small: the course's identity comes from page
+ * composition (see src/pages/index.astro and the *Grid components),
+ * not from overriding the theme's own typography or component shapes.
+ * The theme already carries a page-edge accent rule (`body::after`)
+ * and a restrained pull-quote treatment (`blockquote`) — both reused
+ * as-is rather than re-invented here.
  */
 
 :root {
-  /* Editorial display face for major headings only, system-only (no
-     font request). Body copy stays on the theme's Public Sans. */
-  --course-font-display:
-    ui-serif, "Iowan Old Style", "Palatino Linotype", palatino, "Book Antiqua", georgia, serif;
-
-  /* A narrower measure and squarer geometry than the starter's
-     dashboard defaults. 44rem still leaves headroom above the ~41.5rem
-     a two-column card grid needs to stay two columns. */
+  /* A slightly narrower measure than the starter's dashboard-width
+     default, closer to a printed page column. */
   --at-content-width: 44rem;
-  --at-border-radius: 0.125rem;
 }
 
-/* ---------------------------------------------------------------
-   Type — stronger hierarchy, editorial display face on major headings
-   --------------------------------------------------------------- */
-
-h1,
-.at-hero-title {
-  font-family: var(--course-font-display);
-  font-weight: 500;
-}
-
-/* Plain (non-hero) page headings get the hero's own hairline-rule
-   habit, so a page without a hero image still opens like a page turn. */
-.at-main > h1:first-child {
-  padding-block-end: var(--at-spacing-sm);
-  border-block-end: 1px solid var(--at-divider);
-  margin-block-end: var(--at-spacing-lg);
-}
-
-/* ---------------------------------------------------------------
-   Nav — a quiet frame rather than a floating bar
-   --------------------------------------------------------------- */
-
+/* A quiet frame under the sticky nav, and a clear (not loud) current-page
+   marker — both reversible, neither changes the theme's own colours. */
 .at-nav {
   border-block-end: 1px solid var(--at-divider);
 }
@@ -60,196 +34,148 @@ h1,
   text-decoration-thickness: 1px;
 }
 
+/* The one recurring motif: every page opens with a hairline rule under
+   its title, echoing a page turn without adding any colour or weight. */
+.at-main > h1 {
+  padding-block-end: var(--at-spacing-sm);
+  border-block-end: 1px solid var(--at-divider);
+}
+
 /* ---------------------------------------------------------------
-   Cards — quieter, print-like, no SaaS lift
+   Homepage
    --------------------------------------------------------------- */
 
-.at-card {
-  border-radius: 0;
-}
-
-a.at-card:hover {
-  box-shadow: none;
-  border-color: var(--at-accent);
-}
-
-a.at-card:hover .at-card-image {
-  transform: none;
-}
-
-/* The small metadata line under a card title (week number, lecture
-   week, due date) reads as a caption rather than a second sentence. */
-.at-card-body > p > small {
-  display: block;
-  margin-block-start: var(--at-spacing-xs);
-  font-size: var(--at-font-size-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--at-text-muted);
-}
-
-/* Weeks, Lectures and Assessment share the same card shape but each
-   carries a different hairline rule, so the three listings stay
-   distinguishable from each other at a glance. */
-.weeks-grid .at-card {
-  border-block-start: 3px solid var(--at-primary);
-}
-
-.lectures-grid .at-card {
-  border-inline-start: 3px solid var(--at-secondary);
-}
-
-.assessment-grid .at-card {
-  border-block-start: 3px solid var(--at-tertiary);
-}
-
-.assessment-meta {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--at-spacing-sm);
-}
-
-.assessment-meta small {
-  margin-block-start: 0;
-}
-
-.weight-badge {
-  flex-shrink: 0;
-  font-family: var(--course-font-display);
+.course-kicker {
+  margin-block-end: 0;
   font-size: var(--at-font-size-sm);
+  letter-spacing: 0.02em;
+  color: var(--at-text-muted);
+}
+
+.course-question {
+  max-inline-size: 32ch;
+  font-size: 1.375rem;
+}
+
+.course-progression {
+  font-size: 1.0625rem;
   font-weight: 600;
-  padding: 0.0625rem 0.5rem;
-  border: 1px solid var(--at-divider);
-  color: var(--at-text);
 }
 
 /* ---------------------------------------------------------------
-   Homepage — cover / opening-spread treatment
+   Index lists — Weeks, Lectures, Assessment, homepage contents.
+   A flat, rule-divided list reads as a table of contents rather
+   than a grid of product cards.
    --------------------------------------------------------------- */
 
-.course-home .course-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--at-spacing-sm);
-  margin-block: 0 2rem;
-  padding: 0;
+.index-list {
   list-style: none;
-}
-
-.course-home .course-tags li {
-  padding: 0.2rem 0.6rem;
-  border: 1px solid var(--at-divider);
-  color: var(--at-text-secondary);
-  font-size: var(--at-font-size-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* The central question, set off like a pull quote rather than a bold
-   paragraph — a deliberate, small asymmetry against the surrounding
-   prose rhythm. */
-.course-question {
-  font-family: var(--course-font-display);
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(1.2rem, 1.1rem + 1vw, 1.6rem);
-  line-height: 1.4;
-  max-inline-size: 30ch;
-  margin-block: var(--at-spacing-xl);
-  padding-inline-start: var(--at-spacing-lg);
-  border-inline-start: 3px solid var(--at-primary);
-}
-
-/* The learning progression as a sequence of steps rather than a bold
-   sentence — each step numbered, connected by a quiet arrow. */
-.course-progression {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35em 0;
-  margin: 0 0 var(--at-spacing-xl);
+  margin: var(--at-spacing-lg) 0 var(--at-spacing-xl);
   padding: 0;
-  list-style: none;
-  font-family: var(--course-font-display);
-  font-size: 1.0625rem;
-}
-
-.course-progression li {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5em;
-}
-
-.course-progression li:not(:last-child)::after {
-  content: "→";
-  margin-inline-start: 0.75em;
-  color: var(--at-text-muted);
-  font-family: var(--at-font-body);
-}
-
-.course-progression .step-index {
-  font-size: var(--at-font-size-xs);
-  font-family: var(--at-font-mono);
-  color: var(--at-text-muted);
-}
-
-/* The four entry-point cards read as an index/contents list rather
-   than a grid of product tiles: numbered, unboxed, rule-divided. */
-.course-index-grid {
-  counter-reset: chapter;
-}
-
-.course-index-grid .at-card {
-  counter-increment: chapter;
-  border: none;
   border-block-start: 1px solid var(--at-divider);
 }
 
-.course-index-grid .at-card-body {
-  padding-inline: 0;
+.index-list li {
+  border-block-end: 1px solid var(--at-divider);
 }
 
-.course-index-grid .at-card-title {
-  font-family: var(--course-font-display);
-  font-weight: 500;
-  font-size: 1.25rem;
+.index-list a {
+  display: flex;
+  align-items: baseline;
+  gap: var(--at-spacing-md);
+  padding-block: var(--at-spacing-md);
+  color: inherit;
+  text-decoration: none;
 }
 
-.course-index-grid .at-card-title::before {
-  content: counter(chapter, decimal-leading-zero) "  ";
-  color: var(--at-text-muted);
+.index-list__num {
+  flex: none;
+  width: 2ch;
   font-variant-numeric: tabular-nums;
+  font-size: var(--at-font-size-sm);
+  color: var(--at-text-muted);
 }
 
-a.course-index-grid .at-card:hover,
-.course-index-grid a.at-card:hover {
-  background: none;
-  border-color: var(--at-divider);
+.index-list__body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
 }
 
-.course-index-grid a.at-card:hover .at-card-title {
-  color: var(--at-accent);
+.index-list__title {
+  font-weight: 600;
+  color: var(--at-text);
+}
+
+.index-list__desc {
+  font-size: var(--at-font-size-sm);
+  color: var(--at-text-secondary);
+}
+
+.index-list__meta,
+.index-list__stat {
+  flex: none;
+  margin-inline-start: auto;
+  padding-inline-start: var(--at-spacing-md);
+  font-size: var(--at-font-size-sm);
+  color: var(--at-text-muted);
+  text-align: end;
+  white-space: nowrap;
+}
+
+.index-list__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1em;
+  white-space: normal;
+}
+
+.index-list__weight {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--at-text);
+}
+
+.index-list a:hover .index-list__title,
+.index-list a:focus-visible .index-list__title {
+  color: var(--at-link);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+@media (width < 640px) {
+  .index-list a {
+    flex-wrap: wrap;
+  }
+
+  .index-list__meta,
+  .index-list__stat {
+    flex-basis: 100%;
+    margin-inline-start: calc(2ch + var(--at-spacing-md));
+    padding-inline-start: 0;
+    text-align: start;
+    white-space: normal;
+  }
+
+  .index-list__stat {
+    align-items: flex-start;
+  }
 }
 
 /* ---------------------------------------------------------------
-   Showcase — a deliberate, finished-looking empty state
+   Showcase — a quiet, deliberate empty state
    --------------------------------------------------------------- */
 
 .showcase-empty {
+  max-inline-size: 40ch;
   margin-block-start: var(--at-spacing-xl);
-  padding: var(--at-spacing-2xl) var(--at-spacing-xl);
-  border: 1px dashed var(--at-divider);
-  text-align: center;
+  padding-block-start: var(--at-spacing-lg);
+  border-block-start: 1px solid var(--at-divider);
 }
 
-.showcase-empty p {
-  max-inline-size: 34ch;
-  margin-inline: auto;
-}
-
-.showcase-empty__note {
-  margin-block-start: var(--at-spacing-md);
-  font-family: var(--course-font-display);
-  font-style: italic;
+.showcase-empty p:last-child {
   color: var(--at-text-muted);
 }

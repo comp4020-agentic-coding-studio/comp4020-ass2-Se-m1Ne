@@ -1,21 +1,24 @@
 ---
 import { getPublishedCollection } from "astro-course-university/content";
-import Card from "astro-theme-university/components/Card.astro";
-import CardGrid from "astro-theme-university/components/CardGrid.astro";
+import { withBase } from "astro-theme-university/url";
 
 const lectures = await getPublishedCollection("lectures");
 const visible = lectures.sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
 ---
 
-<div class="lectures-grid">
-  <CardGrid columns={2}>
-    {
-      visible.map((lecture) => (
-        <Card headingLevel="h2" title={lecture.data.title} href={`/lectures/${lecture.id}/`}>
-          {lecture.data.description && <p>{lecture.data.description}</p>}
-          <p><small>Week {lecture.data.week}</small></p>
-        </Card>
-      ))
-    }
-  </CardGrid>
-</div>
+<ol class="index-list">
+  {
+    visible.map((lecture) => (
+      <li>
+        <a href={withBase(`/lectures/${lecture.id}/`)}>
+          <span class="index-list__num">{String(lecture.data.week).padStart(2, "0")}</span>
+          <span class="index-list__body">
+            <span class="index-list__title">{lecture.data.title}</span>
+            {lecture.data.description && <span class="index-list__desc">{lecture.data.description}</span>}
+          </span>
+          {lecture.data.slides && <span class="index-list__meta">Slides</span>}
+        </a>
+      </li>
+    ))
+  }
+</ol>
