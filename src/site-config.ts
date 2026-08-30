@@ -17,6 +17,12 @@ export const siteConfig = defineSiteConfig({
   ...slopBranding,
   name: "Slop University",
 
+  // The course uses one fixed visual theme; the theme's own light/dark
+  // toggle (and its system-preference auto-detection) is switched off here
+  // rather than per page, since every page spreads `siteConfig` into
+  // `BaseLayout` or `ContentLayout`.
+  colorScheme: "light",
+
   links: [
     { text: "Home", href: "/" },
     { text: sessionLabels.plural, href: "/sessions/" },

@@ -8,18 +8,21 @@
  * fixed platform file.
  *
  * Every semantic colour token the theme defines (`--at-bg`, `--at-text`,
- * ...) is a `light-dark()` pair by default, so it flips between a light
- * and a dark value as the theme's own toggle sets `data-theme` on
- * `<html>`. This site instead commits to one warm-neutral shell in both
- * theme states: `:root` fixes the tokens to flat warm values (no
- * `light-dark()`), so nothing here depends on `color-scheme` or
- * `data-theme`. `.at-nav`, `.at-main` and `.at-footer` each layer a
- * slightly different warm tone on top of that shared base — outer
- * shell, header, course canvas — while staying inside the same family.
- * The nav's brand logo is pinned to its light-background variant for
- * the same reason: the theme swaps it for a dark-background variant
- * whenever `data-theme="dark"`, which would read as low-contrast
- * against a nav that no longer goes dark.
+ * ...) is normally a `light-dark()` pair tied to the theme's own toggle.
+ * This course commits to one fixed appearance instead: the toggle is
+ * switched off in `site-config.ts` (`colorScheme: "light"`, spread into
+ * every page's layout), and every token below is a flat value rather
+ * than a `light-dark()` pair.
+ *
+ * `--at-bg` is set once, here, and nowhere else: the theme's own
+ * `html { background-color: var(--at-bg) }` and `.at-nav { background:
+ * var(--at-bg) }` (base.css/components.css) both read this single value,
+ * and `.at-main`/`.at-footer` paint no background of their own, so the
+ * header, the course canvas, the footer and the outer gutters beside
+ * them all show the same inherited surface — one continuous sheet of
+ * paper rather than separate coloured regions. Hierarchy instead comes
+ * from whitespace, hairline borders and cards; `--at-bg-elevated` is the
+ * one deliberate exception, meant to stand out against the paper.
  *
  * One recurring motif is reused everywhere a card or panel appears: a
  * short accent-coloured edge that overshoots the surface's own corner,
@@ -35,56 +38,7 @@
   --course-accent-blue: #55758b;
   --course-accent-mustard: #c89b3c;
 
-  /* Warm-neutral shell, fixed for both theme states — the outer page
-     background visible beside the header/canvas at wide viewports, and
-     the fallback for anything not more specifically scoped below (e.g.
-     the search dialog). */
-  --at-bg: #e6e0d4;
-  --at-bg-elevated: #faf9f6;
-  --at-text: #25231f;
-  --at-text-secondary: rgb(37 35 31 / 78%);
-  --at-text-muted: rgb(37 35 31 / 58%);
-  --at-border: rgb(37 35 31 / 22%);
-  --at-divider: rgb(37 35 31 / 14%);
-}
-
-/* ---------------------------------------------------------------
-   Institutional header — warm/light, fixed for both theme states,
-   visually separated from the shell and the canvas by tone + a
-   hairline rather than a colour jump.
-   --------------------------------------------------------------- */
-.at-nav {
-  --at-bg: #ece6da;
-  --at-text: #25231f;
-  --at-text-secondary: rgb(37 35 31 / 78%);
-  --at-text-muted: rgb(37 35 31 / 58%);
-  --at-border: rgb(37 35 31 / 22%);
-  --at-divider: rgb(37 35 31 / 16%);
-  --at-link: var(--at-primary);
-  border-block-end: 1px solid var(--at-divider);
-}
-
-.at-nav-links a[aria-current="page"] {
-  text-decoration: underline;
-  text-underline-offset: 0.25em;
-  text-decoration-thickness: 1px;
-}
-
-/* The header never goes dark, so always show the logo variant drawn
-   for a light background; the dark-background variant the theme swaps
-   in for `data-theme="dark"` would be low-contrast here. */
-.at-nav-logo--has-dark {
-  display: block;
-}
-
-.at-nav-logo--dark {
-  display: none;
-}
-
-/* ---------------------------------------------------------------
-   Course canvas — warm paper, fixed for both theme states.
-   --------------------------------------------------------------- */
-.at-main {
+  /* One warm-paper surface for the whole site — see the file comment. */
   --at-bg: #f4f1ea;
   --at-bg-elevated: #ffffff;
   --at-text: #25231f;
@@ -93,23 +47,30 @@
   --at-border: #d9d3c2;
   --at-divider: #e3ddce;
   --at-link: #55758b;
-  background: var(--at-bg);
-  color: var(--at-text);
+}
+
+/* The theme's own full-height accent rule at the content column's edge
+   read as a second page boundary once the shell became a single
+   surface, so it's removed rather than restyled — the same accent
+   already appears in smaller doses (card edges, the nav's active link,
+   the progression numbers). */
+body::after {
+  content: none;
 }
 
 /* ---------------------------------------------------------------
-   Footer — same warm-neutral family as the header, bookending it.
+   Institutional header — the same warm paper as the rest of the site,
+   separated from it by a hairline rather than a colour change.
    --------------------------------------------------------------- */
-.at-footer {
-  --at-bg: #ece6da;
-  --at-text: #25231f;
-  --at-text-secondary: rgb(37 35 31 / 78%);
-  --at-text-muted: rgb(37 35 31 / 58%);
-  --at-border: rgb(37 35 31 / 22%);
-  --at-divider: rgb(37 35 31 / 16%);
-  --at-link: #55758b;
-  background: var(--at-bg);
-  color: var(--at-text);
+.at-nav {
+  --at-link: var(--at-primary);
+  border-block-end: 1px solid var(--at-divider);
+}
+
+.at-nav-links a[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
 }
 
 /* The one recurring motif on plain prose pages: a hairline under the
