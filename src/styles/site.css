@@ -715,34 +715,74 @@ a.course-card:focus-visible {
 }
 
 /* Restrained page-turn transition, Previous/Next only — direction is forced
-   via astro:before-preparation in SequentialNavigation.astro. Reduced motion
-   is already handled globally by Astro's own view-transitions styles, which
-   disable every ::view-transition-* animation under prefers-reduced-motion,
-   so no extra media query is needed here. */
+   via astro:before-preparation in SequentialNavigation.astro. The outgoing
+   side rotates away from the edge nearest its direction of travel (as if
+   pinned there, like a leaf turning), the incoming side mirrors it. Reduced
+   motion is already handled globally by Astro's own view-transitions styles,
+   which disable every ::view-transition-* animation under
+   prefers-reduced-motion, so no extra media query is needed here. */
 @keyframes at-page-turn-out-fwd {
   to {
-    transform: translateX(-14px);
-    opacity: 0;
+    transform: translateX(-34px) rotate(-3deg);
+    transform-origin: left center;
+    opacity: 0.45;
   }
 }
 
 @keyframes at-page-turn-in-fwd {
   from {
-    transform: translateX(14px);
-    opacity: 0;
+    transform: translateX(34px) rotate(3deg);
+    transform-origin: right center;
+    opacity: 0.45;
   }
 }
 
 @keyframes at-page-turn-out-bwd {
   to {
-    transform: translateX(14px);
-    opacity: 0;
+    transform: translateX(34px) rotate(3deg);
+    transform-origin: right center;
+    opacity: 0.45;
   }
 }
 
 @keyframes at-page-turn-in-bwd {
   from {
-    transform: translateX(-14px);
-    opacity: 0;
+    transform: translateX(-34px) rotate(-3deg);
+    transform-origin: left center;
+    opacity: 0.45;
+  }
+}
+
+@media (width < 640px) {
+  @keyframes at-page-turn-out-fwd {
+    to {
+      transform: translateX(-22px) rotate(-2deg);
+      transform-origin: left center;
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes at-page-turn-in-fwd {
+    from {
+      transform: translateX(22px) rotate(2deg);
+      transform-origin: right center;
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes at-page-turn-out-bwd {
+    to {
+      transform: translateX(22px) rotate(2deg);
+      transform-origin: right center;
+      opacity: 0.5;
+    }
+  }
+
+  @keyframes at-page-turn-in-bwd {
+    from {
+      transform: translateX(-22px) rotate(-2deg);
+      transform-origin: left center;
+      opacity: 0.5;
+    }
   }
 }

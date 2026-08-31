@@ -20,14 +20,16 @@ interface Props {
 
 const { previous, next, positionLabel } = Astro.props;
 
+const pageTurnEasing = "cubic-bezier(0.4, 0, 0.2, 1)";
+
 const pageTurn = {
   forwards: {
-    old: { name: "at-page-turn-out-fwd", duration: "260ms", easing: "ease", fillMode: "both" },
-    new: { name: "at-page-turn-in-fwd", duration: "260ms", easing: "ease", fillMode: "both" },
+    old: { name: "at-page-turn-out-fwd", duration: "340ms", easing: pageTurnEasing, fillMode: "both" },
+    new: { name: "at-page-turn-in-fwd", duration: "340ms", easing: pageTurnEasing, fillMode: "both" },
   },
   backwards: {
-    old: { name: "at-page-turn-out-bwd", duration: "260ms", easing: "ease", fillMode: "both" },
-    new: { name: "at-page-turn-in-bwd", duration: "260ms", easing: "ease", fillMode: "both" },
+    old: { name: "at-page-turn-out-bwd", duration: "340ms", easing: pageTurnEasing, fillMode: "both" },
+    new: { name: "at-page-turn-in-bwd", duration: "340ms", easing: pageTurnEasing, fillMode: "both" },
   },
 };
 ---
