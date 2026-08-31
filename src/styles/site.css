@@ -267,6 +267,26 @@ body::after {
   color: var(--course-teal);
 }
 
+/* Stacked variant — Weeks listing. The label and the two-digit number are
+   separate block-level children in a column flex box, so the two-line
+   layout is explicit and never depends on incidental text wrapping (which
+   otherwise varies by digit glyph width, e.g. "09"/"10" vs "11"). */
+.course-card__num--stacked {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.course-card__num-label,
+.course-card__num-value {
+  display: block;
+}
+
+.course-card__num-value {
+  font-variant-numeric: tabular-nums;
+  min-inline-size: 2ch;
+}
+
 .course-card__header {
   display: flex;
   align-items: baseline;
