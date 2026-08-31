@@ -1,13 +1,6 @@
 ---
 // Previous/Next controls shared by Week, Lecture, and Assessment detail
-// pages. Direction is forced via `astro:before-preparation` below, keyed off
-// `data-nav-direction` on the clicked link, so ordinary navigation (top nav,
-// index pages, related-content links) is unaffected and keeps its current
-// behaviour. The same handler sets `data-page-turn="next"|"prev"` on <html>,
-// which is what site.css keys its clip-path page-peel animation to (played
-// on the browser's own ::view-transition-old/new(root) snapshots — no
-// cloned content), and creates the one small decorative fold cue
-// (../lib/page-turn-fold.ts) — see CLAUDE.md.
+// pages. Plain accessible anchor navigation — no client-side script.
 interface NavTarget {
   href: string;
   label: string;
@@ -27,7 +20,7 @@ const { previous, next, positionLabel } = Astro.props;
   <div class="sequential-nav__side sequential-nav__side--prev">
     {
       previous && (
-        <a href={previous.href} data-nav-direction="prev" rel="prev">
+        <a href={previous.href} rel="prev">
           <span class="sequential-nav__arrow" aria-hidden="true">
             ←
           </span>
@@ -43,7 +36,7 @@ const { previous, next, positionLabel } = Astro.props;
   <div class="sequential-nav__side sequential-nav__side--next">
     {
       next && (
-        <a href={next.href} data-nav-direction="next" rel="next">
+        <a href={next.href} rel="next">
           <span class="sequential-nav__copy">
             <span class="sequential-nav__hint">Next</span>
             <span class="sequential-nav__label">{next.label}</span>
@@ -56,34 +49,3 @@ const { previous, next, positionLabel } = Astro.props;
     }
   </div>
 </nav>
-
-<script>
-  import { createPageTurnFold } from "../lib/page-turn-fold";
-
-  // Runs once per document even across client-side navigations (the flag
-  // lives on <html>, which persists across Astro's view-transition swaps).
-  if (!document.documentElement.dataset.sequentialNavPatched) {
-    document.documentElement.dataset.sequentialNavPatched = "true";
-
-    document.addEventListener("astro:before-preparation", (event) => {
-      const source = event.sourceElement;
-      const direction =
-        source instanceof Element ? source.closest("[data-nav-direction]")?.getAttribute("data-nav-direction") : null;
-
-      if (direction === "prev") event.direction = "back";
-      else if (direction === "next") event.direction = "forward";
-
-      // Scope the page-peel animation (site.css) to these links only. Cleared
-      // with a timeout rather than on astro:after-swap: the swap event fires
-      // before the peel animation finishes, and clearing the attribute that
-      // early would let the default crossfade flash in underneath it.
-      if (direction === "prev" || direction === "next") {
-        document.documentElement.dataset.pageTurn = direction;
-        createPageTurnFold(direction);
-        window.setTimeout(() => {
-          delete document.documentElement.dataset.pageTurn;
-        }, 500);
-      }
-    });
-  }
-</script>
