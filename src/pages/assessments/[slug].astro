@@ -9,6 +9,7 @@ import ContentLayout from "../../layouts/ContentPageLayout.astro";
 import MarkingModel from "../../components/MarkingModel.astro";
 import SequentialNavigation from "../../components/SequentialNavigation.astro";
 import { dueLabel } from "../../lib/assessment-due";
+import { pageTurn } from "../../lib/page-turn";
 import { graphCollections, siteConfig } from "../../site-config";
 import "../../styles/site.css";
 
@@ -45,27 +46,29 @@ const nextAssessment =
     )
   }
   <p><strong>Due:</strong> {dueLabel(assessment.data)} · <strong>Weight:</strong> {assessment.data.weight}%</p>
-  <Content />
-  <SpecList spec={assessment.data.spec}>
-    The brief poses the problem and leaves room for a response. The spec is the
-    fixed part: what a marker checks. Some lines can be checked mechanically;
-    the rest call for judgement.
-  </SpecList>
-  {assessment.data.marking && <MarkingModel marking={assessment.data.marking} />}
-  <RelatedContent entry={assessment} collections={graphCollections} />
-  <SequentialNavigation
-    previous={
-      previousAssessment && {
-        href: withBase(`/assessments/${previousAssessment.id}/`),
-        label: previousAssessment.data.title,
+  <div class="sequential-page-surface" transition:name="sequential-page-surface" transition:animate={pageTurn}>
+    <Content />
+    <SpecList spec={assessment.data.spec}>
+      The brief poses the problem and leaves room for a response. The spec is
+      the fixed part: what a marker checks. Some lines can be checked
+      mechanically; the rest call for judgement.
+    </SpecList>
+    {assessment.data.marking && <MarkingModel marking={assessment.data.marking} />}
+    <RelatedContent entry={assessment} collections={graphCollections} />
+    <SequentialNavigation
+      previous={
+        previousAssessment && {
+          href: withBase(`/assessments/${previousAssessment.id}/`),
+          label: previousAssessment.data.title,
+        }
       }
-    }
-    next={
-      nextAssessment && {
-        href: withBase(`/assessments/${nextAssessment.id}/`),
-        label: nextAssessment.data.title,
+      next={
+        nextAssessment && {
+          href: withBase(`/assessments/${nextAssessment.id}/`),
+          label: nextAssessment.data.title,
+        }
       }
-    }
-    positionLabel={`ASSESSMENT ${assessmentIndex + 1} / ${orderedAssessments.length}`}
-  />
+      positionLabel={`ASSESSMENT ${assessmentIndex + 1} / ${orderedAssessments.length}`}
+    />
+  </div>
 </ContentLayout>

@@ -7,6 +7,7 @@ import { withBase } from "astro-theme-university/url";
 import TeachingTeam from "../../components/TeachingTeam.astro";
 import SequentialNavigation from "../../components/SequentialNavigation.astro";
 import { graphCollections, siteConfig } from "../../site-config";
+import { pageTurn } from "../../lib/page-turn";
 import "../../styles/site.css";
 
 export async function getStaticPaths() {
@@ -28,22 +29,24 @@ const nextLecture = lectureIndex < orderedLectures.length - 1 ? orderedLectures[
 
 <ContentLayout title={title} description={lecture.data.description} {...siteConfig}>
   {lecture.data.slides && <p><a href={withBase(lecture.data.slides)}>Open the slides</a></p>}
-  <Content />
-  <TeachingTeam teachers={lecture.data.teachers} />
-  <RelatedContent entry={lecture} collections={graphCollections} />
-  <SequentialNavigation
-    previous={
-      previousLecture && {
-        href: withBase(`/lectures/${previousLecture.id}/`),
-        label: `Week ${String(previousLecture.data.week).padStart(2, "0")}: ${previousLecture.data.title}`,
+  <div class="sequential-page-surface" transition:name="sequential-page-surface" transition:animate={pageTurn}>
+    <Content />
+    <TeachingTeam teachers={lecture.data.teachers} />
+    <RelatedContent entry={lecture} collections={graphCollections} />
+    <SequentialNavigation
+      previous={
+        previousLecture && {
+          href: withBase(`/lectures/${previousLecture.id}/`),
+          label: `Week ${String(previousLecture.data.week).padStart(2, "0")}: ${previousLecture.data.title}`,
+        }
       }
-    }
-    next={
-      nextLecture && {
-        href: withBase(`/lectures/${nextLecture.id}/`),
-        label: `Week ${String(nextLecture.data.week).padStart(2, "0")}: ${nextLecture.data.title}`,
+      next={
+        nextLecture && {
+          href: withBase(`/lectures/${nextLecture.id}/`),
+          label: `Week ${String(nextLecture.data.week).padStart(2, "0")}: ${nextLecture.data.title}`,
+        }
       }
-    }
-    positionLabel={`LECTURE ${String(lecture.data.week).padStart(2, "0")} / ${orderedLectures.length}`}
-  />
+      positionLabel={`LECTURE ${String(lecture.data.week).padStart(2, "0")} / ${orderedLectures.length}`}
+    />
+  </div>
 </ContentLayout>

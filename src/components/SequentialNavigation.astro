@@ -1,11 +1,12 @@
 ---
 // Previous/Next controls shared by Week, Lecture, and Assessment detail
-// pages, with a restrained page-turn transition scoped to these links only
-// (see CLAUDE.md). The transition's forward/backward pair is defined once
-// here; direction is forced via `astro:before-preparation` below, keyed off
+// pages. Direction is forced via `astro:before-preparation` below, keyed off
 // `data-nav-direction` on the clicked link, so ordinary navigation (top nav,
 // index pages, related-content links) is unaffected and keeps its current
-// behaviour.
+// behaviour. The page-turn transition itself lives on the content-surface
+// wrapper each detail page renders around this component (see
+// `../lib/page-turn.ts` and the three `[slug].astro` pages) so the whole
+// content page moves as one piece, not just this bar — see CLAUDE.md.
 interface NavTarget {
   href: string;
   label: string;
@@ -19,27 +20,9 @@ interface Props {
 }
 
 const { previous, next, positionLabel } = Astro.props;
-
-const pageTurnEasing = "cubic-bezier(0.4, 0, 0.2, 1)";
-
-const pageTurn = {
-  forwards: {
-    old: { name: "at-page-turn-out-fwd", duration: "340ms", easing: pageTurnEasing, fillMode: "both" },
-    new: { name: "at-page-turn-in-fwd", duration: "340ms", easing: pageTurnEasing, fillMode: "both" },
-  },
-  backwards: {
-    old: { name: "at-page-turn-out-bwd", duration: "340ms", easing: pageTurnEasing, fillMode: "both" },
-    new: { name: "at-page-turn-in-bwd", duration: "340ms", easing: pageTurnEasing, fillMode: "both" },
-  },
-};
 ---
 
-<nav
-  class="sequential-nav"
-  aria-label="Sequential navigation"
-  transition:name="sequential-nav"
-  transition:animate={pageTurn}
->
+<nav class="sequential-nav" aria-label="Sequential navigation">
   <div class="sequential-nav__side sequential-nav__side--prev">
     {
       previous && (

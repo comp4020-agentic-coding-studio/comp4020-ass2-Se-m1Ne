@@ -8,6 +8,7 @@ import ContentLayout from "../../layouts/ContentPageLayout.astro";
 import TeachingTeam from "../../components/TeachingTeam.astro";
 import SequentialNavigation from "../../components/SequentialNavigation.astro";
 import { graphCollections, siteConfig } from "../../site-config";
+import { pageTurn } from "../../lib/page-turn";
 import "../../styles/site.css";
 
 export async function getStaticPaths() {
@@ -29,26 +30,28 @@ const nextSession = sessionIndex < orderedSessions.length - 1 ? orderedSessions[
   description={session.data.description}
   {...siteConfig}
 >
-  <Content />
-  <SpecList spec={session.data.spec}>
-    What you bring to the session. Written so a reader can tell whether it has
-    been met without asking you.
-  </SpecList>
-  <TeachingTeam teachers={session.data.teachers} />
-  <RelatedContent entry={session} collections={graphCollections} />
-  <SequentialNavigation
-    previous={
-      previousSession && {
-        href: withBase(`/sessions/${previousSession.id}/`),
-        label: `Week ${String(previousSession.data.week).padStart(2, "0")}: ${previousSession.data.title}`,
+  <div class="sequential-page-surface" transition:name="sequential-page-surface" transition:animate={pageTurn}>
+    <Content />
+    <SpecList spec={session.data.spec}>
+      What you bring to the session. Written so a reader can tell whether it
+      has been met without asking you.
+    </SpecList>
+    <TeachingTeam teachers={session.data.teachers} />
+    <RelatedContent entry={session} collections={graphCollections} />
+    <SequentialNavigation
+      previous={
+        previousSession && {
+          href: withBase(`/sessions/${previousSession.id}/`),
+          label: `Week ${String(previousSession.data.week).padStart(2, "0")}: ${previousSession.data.title}`,
+        }
       }
-    }
-    next={
-      nextSession && {
-        href: withBase(`/sessions/${nextSession.id}/`),
-        label: `Week ${String(nextSession.data.week).padStart(2, "0")}: ${nextSession.data.title}`,
+      next={
+        nextSession && {
+          href: withBase(`/sessions/${nextSession.id}/`),
+          label: `Week ${String(nextSession.data.week).padStart(2, "0")}: ${nextSession.data.title}`,
+        }
       }
-    }
-    positionLabel={`WEEK ${String(session.data.week).padStart(2, "0")} / ${orderedSessions.length}`}
-  />
+      positionLabel={`WEEK ${String(session.data.week).padStart(2, "0")} / ${orderedSessions.length}`}
+    />
+  </div>
 </ContentLayout>

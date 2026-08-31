@@ -595,9 +595,9 @@ a.course-card:focus-visible {
   background: var(--course-mustard);
 }
 
-/* Sequential Week/Lecture/Assessment navigation (Previous/Next). A plain
-   `.at-main` grid child like any other page section — see
-   SequentialNavigation.astro for why it isn't wrapped around page content. */
+/* Sequential Week/Lecture/Assessment navigation (Previous/Next). Sits inside
+   the `.sequential-page-surface` wrapper (see the `[slug].astro` pages),
+   which is the element that actually carries the page-turn transition. */
 .sequential-nav {
   display: flex;
   align-items: center;
@@ -714,75 +714,72 @@ a.course-card:focus-visible {
   }
 }
 
-/* Restrained page-turn transition, Previous/Next only — direction is forced
-   via astro:before-preparation in SequentialNavigation.astro. The outgoing
-   side rotates away from the edge nearest its direction of travel (as if
-   pinned there, like a leaf turning), the incoming side mirrors it. Reduced
-   motion is already handled globally by Astro's own view-transitions styles,
-   which disable every ::view-transition-* animation under
-   prefers-reduced-motion, so no extra media query is needed here. */
+/* Restrained page-turn transition, Previous/Next only. Applied to the
+   `.sequential-page-surface` wrapper each detail page renders around its
+   content + SequentialNavigation (see the three `[slug].astro` pages and
+   `../lib/page-turn.ts`), not to the nav bar alone — that surface can be
+   very tall, so this is horizontal translate + a small opacity dip only, no
+   rotation and no transform-origin: a rotated edge on a tall box would swing
+   its far side vertically by a large amount, which is exactly the "vertical
+   flash" this replaces. Direction is forced via astro:before-preparation in
+   SequentialNavigation.astro. Reduced motion is already handled globally by
+   Astro's own view-transitions styles, which disable every
+   ::view-transition-* animation under prefers-reduced-motion, so no extra
+   media query is needed here. */
 @keyframes at-page-turn-out-fwd {
   to {
-    transform: translateX(-34px) rotate(-3deg);
-    transform-origin: left center;
-    opacity: 0.45;
+    transform: translateX(-36px);
+    opacity: 0.86;
   }
 }
 
 @keyframes at-page-turn-in-fwd {
   from {
-    transform: translateX(34px) rotate(3deg);
-    transform-origin: right center;
-    opacity: 0.45;
+    transform: translateX(36px);
+    opacity: 0.86;
   }
 }
 
 @keyframes at-page-turn-out-bwd {
   to {
-    transform: translateX(34px) rotate(3deg);
-    transform-origin: right center;
-    opacity: 0.45;
+    transform: translateX(36px);
+    opacity: 0.86;
   }
 }
 
 @keyframes at-page-turn-in-bwd {
   from {
-    transform: translateX(-34px) rotate(-3deg);
-    transform-origin: left center;
-    opacity: 0.45;
+    transform: translateX(-36px);
+    opacity: 0.86;
   }
 }
 
 @media (width < 640px) {
   @keyframes at-page-turn-out-fwd {
     to {
-      transform: translateX(-22px) rotate(-2deg);
-      transform-origin: left center;
-      opacity: 0.5;
+      transform: translateX(-24px);
+      opacity: 0.9;
     }
   }
 
   @keyframes at-page-turn-in-fwd {
     from {
-      transform: translateX(22px) rotate(2deg);
-      transform-origin: right center;
-      opacity: 0.5;
+      transform: translateX(24px);
+      opacity: 0.9;
     }
   }
 
   @keyframes at-page-turn-out-bwd {
     to {
-      transform: translateX(22px) rotate(2deg);
-      transform-origin: right center;
-      opacity: 0.5;
+      transform: translateX(24px);
+      opacity: 0.9;
     }
   }
 
   @keyframes at-page-turn-in-bwd {
     from {
-      transform: translateX(-22px) rotate(-2deg);
-      transform-origin: left center;
-      opacity: 0.5;
+      transform: translateX(-24px);
+      opacity: 0.9;
     }
   }
 }
