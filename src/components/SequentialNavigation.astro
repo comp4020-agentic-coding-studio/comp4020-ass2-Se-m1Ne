@@ -1,0 +1,89 @@
+---
+// Previous/Next controls shared by Week, Lecture, and Assessment detail
+// pages, with a restrained page-turn transition scoped to these links only
+// (see CLAUDE.md). The transition's forward/backward pair is defined once
+// here; direction is forced via `astro:before-preparation` below, keyed off
+// `data-nav-direction` on the clicked link, so ordinary navigation (top nav,
+// index pages, related-content links) is unaffected and keeps its current
+// behaviour.
+interface NavTarget {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  previous?: NavTarget;
+  next?: NavTarget;
+  /** Restrained centre indicator, e.g. "WEEK 06 / 12" or "ASSESSMENT 2 / 4". */
+  positionLabel: string;
+}
+
+const { previous, next, positionLabel } = Astro.props;
+
+const pageTurn = {
+  forwards: {
+    old: { name: "at-page-turn-out-fwd", duration: "260ms", easing: "ease", fillMode: "both" },
+    new: { name: "at-page-turn-in-fwd", duration: "260ms", easing: "ease", fillMode: "both" },
+  },
+  backwards: {
+    old: { name: "at-page-turn-out-bwd", duration: "260ms", easing: "ease", fillMode: "both" },
+    new: { name: "at-page-turn-in-bwd", duration: "260ms", easing: "ease", fillMode: "both" },
+  },
+};
+---
+
+<nav
+  class="sequential-nav"
+  aria-label="Sequential navigation"
+  transition:name="sequential-nav"
+  transition:animate={pageTurn}
+>
+  <div class="sequential-nav__side sequential-nav__side--prev">
+    {
+      previous && (
+        <a href={previous.href} data-nav-direction="prev" rel="prev">
+          <span class="sequential-nav__arrow" aria-hidden="true">
+            ←
+          </span>
+          <span class="sequential-nav__copy">
+            <span class="sequential-nav__hint">Previous</span>
+            <span class="sequential-nav__label">{previous.label}</span>
+          </span>
+        </a>
+      )
+    }
+  </div>
+  <p class="sequential-nav__position">{positionLabel}</p>
+  <div class="sequential-nav__side sequential-nav__side--next">
+    {
+      next && (
+        <a href={next.href} data-nav-direction="next" rel="next">
+          <span class="sequential-nav__copy">
+            <span class="sequential-nav__hint">Next</span>
+            <span class="sequential-nav__label">{next.label}</span>
+          </span>
+          <span class="sequential-nav__arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
+      )
+    }
+  </div>
+</nav>
+
+<script>
+  // Runs once per document even across client-side navigations (the flag
+  // lives on <html>, which persists across Astro's view-transition swaps).
+  if (!document.documentElement.dataset.sequentialNavPatched) {
+    document.documentElement.dataset.sequentialNavPatched = "true";
+
+    document.addEventListener("astro:before-preparation", (event) => {
+      const source = event.sourceElement;
+      const direction =
+        source instanceof Element ? source.closest("[data-nav-direction]")?.getAttribute("data-nav-direction") : null;
+
+      if (direction === "prev") event.direction = "back";
+      else if (direction === "next") event.direction = "forward";
+    });
+  }
+</script>

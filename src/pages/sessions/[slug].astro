@@ -3,8 +3,10 @@ import { render } from "astro:content";
 import { getPublishedCollection } from "astro-course-university/content";
 import RelatedContent from "astro-course-university/components/RelatedContent.astro";
 import SpecList from "astro-course-university/components/SpecList.astro";
+import { withBase } from "astro-theme-university/url";
 import ContentLayout from "../../layouts/ContentPageLayout.astro";
 import TeachingTeam from "../../components/TeachingTeam.astro";
+import SequentialNavigation from "../../components/SequentialNavigation.astro";
 import { graphCollections, siteConfig } from "../../site-config";
 import "../../styles/site.css";
 
@@ -15,6 +17,11 @@ export async function getStaticPaths() {
 
 const { session } = Astro.props;
 const { Content } = await render(session);
+
+const orderedSessions = (await getPublishedCollection("sessions")).sort((a, b) => a.data.week - b.data.week);
+const sessionIndex = orderedSessions.findIndex((s) => s.id === session.id);
+const previousSession = sessionIndex > 0 ? orderedSessions[sessionIndex - 1] : undefined;
+const nextSession = sessionIndex < orderedSessions.length - 1 ? orderedSessions[sessionIndex + 1] : undefined;
 ---
 
 <ContentLayout
@@ -29,4 +36,19 @@ const { Content } = await render(session);
   </SpecList>
   <TeachingTeam teachers={session.data.teachers} />
   <RelatedContent entry={session} collections={graphCollections} />
+  <SequentialNavigation
+    previous={
+      previousSession && {
+        href: withBase(`/sessions/${previousSession.id}/`),
+        label: `Week ${String(previousSession.data.week).padStart(2, "0")}: ${previousSession.data.title}`,
+      }
+    }
+    next={
+      nextSession && {
+        href: withBase(`/sessions/${nextSession.id}/`),
+        label: `Week ${String(nextSession.data.week).padStart(2, "0")}: ${nextSession.data.title}`,
+      }
+    }
+    positionLabel={`WEEK ${String(session.data.week).padStart(2, "0")} / ${orderedSessions.length}`}
+  />
 </ContentLayout>

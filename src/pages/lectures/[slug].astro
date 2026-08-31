@@ -5,6 +5,7 @@ import RelatedContent from "astro-course-university/components/RelatedContent.as
 import ContentLayout from "../../layouts/ContentPageLayout.astro";
 import { withBase } from "astro-theme-university/url";
 import TeachingTeam from "../../components/TeachingTeam.astro";
+import SequentialNavigation from "../../components/SequentialNavigation.astro";
 import { graphCollections, siteConfig } from "../../site-config";
 import "../../styles/site.css";
 
@@ -16,6 +17,13 @@ export async function getStaticPaths() {
 const { lecture } = Astro.props;
 const { Content } = await render(lecture);
 const title = `Week ${lecture.data.week}: ${lecture.data.title}`;
+
+const orderedLectures = (await getPublishedCollection("lectures")).sort(
+  (a, b) => a.data.date.getTime() - b.data.date.getTime(),
+);
+const lectureIndex = orderedLectures.findIndex((l) => l.id === lecture.id);
+const previousLecture = lectureIndex > 0 ? orderedLectures[lectureIndex - 1] : undefined;
+const nextLecture = lectureIndex < orderedLectures.length - 1 ? orderedLectures[lectureIndex + 1] : undefined;
 ---
 
 <ContentLayout title={title} description={lecture.data.description} {...siteConfig}>
@@ -23,4 +31,19 @@ const title = `Week ${lecture.data.week}: ${lecture.data.title}`;
   <Content />
   <TeachingTeam teachers={lecture.data.teachers} />
   <RelatedContent entry={lecture} collections={graphCollections} />
+  <SequentialNavigation
+    previous={
+      previousLecture && {
+        href: withBase(`/lectures/${previousLecture.id}/`),
+        label: `Week ${String(previousLecture.data.week).padStart(2, "0")}: ${previousLecture.data.title}`,
+      }
+    }
+    next={
+      nextLecture && {
+        href: withBase(`/lectures/${nextLecture.id}/`),
+        label: `Week ${String(nextLecture.data.week).padStart(2, "0")}: ${nextLecture.data.title}`,
+      }
+    }
+    positionLabel={`LECTURE ${String(lecture.data.week).padStart(2, "0")} / ${orderedLectures.length}`}
+  />
 </ContentLayout>

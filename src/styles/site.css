@@ -594,3 +594,155 @@ a.course-card:focus-visible {
   border-radius: 2px;
   background: var(--course-mustard);
 }
+
+/* Sequential Week/Lecture/Assessment navigation (Previous/Next). A plain
+   `.at-main` grid child like any other page section — see
+   SequentialNavigation.astro for why it isn't wrapped around page content. */
+.sequential-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--at-spacing-md);
+  margin-block-start: var(--at-spacing-2xl);
+  padding-block-start: var(--at-spacing-lg);
+  border-block-start: 1px solid var(--at-divider);
+}
+
+.sequential-nav__side {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.sequential-nav__side--next {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sequential-nav__position {
+  flex: none;
+  margin: 0;
+  font-size: var(--at-font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--course-teal);
+  white-space: nowrap;
+}
+
+.sequential-nav a {
+  display: flex;
+  align-items: center;
+  gap: var(--at-spacing-sm);
+  max-inline-size: 24ch;
+  color: var(--at-text);
+  text-decoration: none;
+}
+
+.sequential-nav__side--next a {
+  text-align: right;
+}
+
+.sequential-nav__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+  min-width: 0;
+}
+
+.sequential-nav__hint {
+  font-size: var(--at-font-size-sm);
+  color: var(--at-text-muted);
+}
+
+.sequential-nav__label {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sequential-nav__arrow {
+  flex: none;
+  font-size: 1.125rem;
+  color: var(--at-text-muted);
+  transition: transform 0.15s ease;
+}
+
+.sequential-nav a:hover,
+.sequential-nav a:focus-visible {
+  color: var(--course-coral);
+}
+
+.sequential-nav a:hover .sequential-nav__arrow,
+.sequential-nav a:focus-visible .sequential-nav__arrow {
+  color: var(--course-coral);
+}
+
+.sequential-nav__side--prev a:hover .sequential-nav__arrow,
+.sequential-nav__side--prev a:focus-visible .sequential-nav__arrow {
+  transform: translateX(-3px);
+}
+
+.sequential-nav__side--next a:hover .sequential-nav__arrow,
+.sequential-nav__side--next a:focus-visible .sequential-nav__arrow {
+  transform: translateX(3px);
+}
+
+.sequential-nav a:focus-visible {
+  outline: 2px solid var(--course-coral);
+  outline-offset: 2px;
+}
+
+@media (width < 640px) {
+  .sequential-nav {
+    flex-wrap: wrap;
+    row-gap: var(--at-spacing-sm);
+  }
+
+  .sequential-nav__position {
+    order: -1;
+    flex-basis: 100%;
+    text-align: center;
+  }
+
+  .sequential-nav a {
+    max-inline-size: none;
+  }
+
+  .sequential-nav__label {
+    white-space: normal;
+  }
+}
+
+/* Restrained page-turn transition, Previous/Next only — direction is forced
+   via astro:before-preparation in SequentialNavigation.astro. Reduced motion
+   is already handled globally by Astro's own view-transitions styles, which
+   disable every ::view-transition-* animation under prefers-reduced-motion,
+   so no extra media query is needed here. */
+@keyframes at-page-turn-out-fwd {
+  to {
+    transform: translateX(-14px);
+    opacity: 0;
+  }
+}
+
+@keyframes at-page-turn-in-fwd {
+  from {
+    transform: translateX(14px);
+    opacity: 0;
+  }
+}
+
+@keyframes at-page-turn-out-bwd {
+  to {
+    transform: translateX(14px);
+    opacity: 0;
+  }
+}
+
+@keyframes at-page-turn-in-bwd {
+  from {
+    transform: translateX(-14px);
+    opacity: 0;
+  }
+}

@@ -387,6 +387,8 @@ Do not force an interaction into every week.
 
 A simple page is preferable when an interaction does not improve the concept.
 
+Sequential Week/Lecture/Assessment navigation may use a restrained page-turn transition. It must remain functional, subtle, accessible, responsive, and respect reduced-motion preferences.
+
 ---
 
 ## Recurring narrative detail
