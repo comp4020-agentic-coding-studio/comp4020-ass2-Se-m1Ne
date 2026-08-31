@@ -11,3 +11,110 @@
  * slide class you reach for (`_class: quote`), a code-heavy layout, a
  * background. */
 @import url("astro-theme-university/styles/deck.css");
+
+/* Picture Books That Misbehave — bring the deck into the same warm-paper
+ * system as the course website rather than leaving it on deck.css's default
+ * dark surface. Every rule here matches the selector deck.css itself uses
+ * for the same content (including its zero-specificity `:where(.reveal
+ * .slides) section` prefix), so nothing needs `!important`: equal
+ * specificity plus later source order is enough to win.
+ *
+ * `--at-primary` is still the Slop gold (see astro-theme-slop/slop.css), so
+ * the deck's existing gold accents --- the heading highlight box, rules,
+ * links --- carry over unchanged; only the surface and ink flip from dark
+ * to the site's paper and near-black text.
+ */
+:root {
+  color-scheme: light;
+
+  --course-accent-red: #c94f43;
+  --course-accent-blue: #55758b;
+  --course-accent-mustard: #c89b3c;
+
+  --r-background-color: #f4f1ea;
+  --r-main-color: #25231f;
+  --at-divider: rgb(37 35 31 / 14%);
+  --at-text-secondary: rgb(37 35 31 / 78%);
+}
+
+/* Code blocks: deck.css picks the dark shiki colour arm unconditionally
+   because it assumes a dark-only deck; this deck is light-only, so take
+   the light arm instead, and give `pre` a paper-appropriate card instead
+   of a barely-there white wash meant to sit on near-black. */
+:where(.reveal .slides) section pre {
+  background: #ffffff;
+  border: 1px solid var(--at-divider);
+}
+
+:where(.reveal .slides) section :is(.astro-code, .astro-code span) {
+  color: var(--shiki-light);
+  background-color: transparent;
+  font-style: var(--shiki-light-font-style);
+  font-weight: var(--shiki-light-font-weight);
+}
+
+/* The subtitle immediately under a title slide's h1 reads as light-grey by
+   default, tuned for a dark deck; on paper that's too faint to read. */
+:where(.reveal .slides) section h1 + h2 {
+  color: var(--r-main-color);
+}
+
+/* Opening/impact slide: deck.css fills it edge-to-edge with solid brand
+   gold. On a site that keeps accent colour to small elements rather than
+   large fills, that reads as a different, louder system from the rest of
+   the deck --- so this slide keeps the shared paper background instead,
+   and lets the existing gold heading box (deck.css's plain `h1` rule,
+   unchanged) carry the accent. */
+:where(.reveal .slides) section.impact {
+  background-color: var(--r-background-color);
+  color: var(--r-main-color);
+}
+
+:where(.reveal .slides) section.impact :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--r-main-color);
+}
+
+:where(.reveal .slides) section.impact strong,
+:where(.reveal .slides) section.impact em {
+  color: var(--at-primary);
+}
+
+:where(.reveal .slides) section.impact a {
+  color: var(--at-primary);
+  text-decoration: underline;
+}
+
+/* Pull-quote slide: white text and a drop shadow suited to a dark or
+   photographic background read poorly on flat paper. */
+:where(.reveal .slides) section.quote {
+  text-shadow: none;
+}
+
+:where(.reveal .slides) section.quote blockquote {
+  color: var(--r-main-color);
+}
+
+/* Closing slide (`_class: banner`): deck.css defines no such class, so it
+   previously fell back to a plain left-aligned slide. Give it the same
+   restrained bookend treatment as the opening slide --- centred, with the
+   small accent-edge motif the website uses on its cards --- rather than
+   leaving it visually unfinished. */
+:where(.reveal .slides) section.banner {
+  place-content: center;
+  text-align: center;
+}
+
+:where(.reveal .slides) section.banner::before {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 5px;
+  margin: 0 auto 1.5rem;
+  border-radius: 2px;
+  background: var(--course-accent-blue);
+}
+
+:where(.reveal .slides) section .image-credit,
+:where(.reveal .slides) section .image-credit a {
+  color: rgb(37 35 31 / 60%);
+}
