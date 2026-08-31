@@ -318,6 +318,19 @@ Any visual or interactive misbehaviour should support the course idea rather tha
 
 Prefer controlled moments of surprise over a constantly chaotic interface.
 
+### Locked routing and date decisions
+
+`/` is a short Cover/Landing page (title, subtitle, a one-line intro, an
+abstract CSS-only cover composition, and a CTA into the course). `/home/` is
+the full information-rich homepage. The institutional crest and the top-nav
+"Home" link both point at `/home/`, not `/`; the crest continues to also link
+to `/` as the site root.
+
+The public site never shows calendar dates (no semester, no year, no
+formatted due date). Public timing is expressed only as `Week N`. Internal
+content-collection dates still exist and must stay valid so each week remains
+a genuinely dated teaching week; they are simply not rendered publicly.
+
 ---
 
 ## Visual direction
@@ -338,6 +351,18 @@ The site should feel experimental but still credible as a university course webs
 Do not make every section visually noisy.
 
 Do not add decorative complexity that makes the content harder to scan.
+
+### Locked colour system
+
+Deep teal is the primary course identity colour (major headings, section
+numbering). Coral is the primary card and UI interaction accent (card top
+markers, hover/focus borders, the active-nav marker). Soft mustard is a rare
+tertiary colour only — it must not be a repeated card or generic UI accent.
+
+The Slop University crest is fixed institutional branding (hardcoded gold,
+non-`currentColor`, per README policy) and stays untouched. It is the only
+gold allowed on the site; no starter-theme gold should remain in card
+accents, selection colour, table headers, focus states, or navigation.
 
 ---
 

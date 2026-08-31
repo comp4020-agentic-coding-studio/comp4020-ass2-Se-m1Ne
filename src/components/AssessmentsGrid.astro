@@ -1,7 +1,7 @@
 ---
 import { getPublishedCollection } from "astro-course-university/content";
 import { withBase } from "astro-theme-university/url";
-import { formatCourseDate } from "../lib/dates";
+import { dueLabel } from "../lib/assessment-due";
 
 const assessments = await getPublishedCollection("assessments");
 const visible = assessments.sort((a, b) => a.data.week - b.data.week);
@@ -10,7 +10,7 @@ const visible = assessments.sort((a, b) => a.data.week - b.data.week);
 <div class="card-grid">
   {
     visible.map((assessment, index) => (
-      <a class="course-card course-card--teal" href={withBase(`/assessments/${assessment.id}/`)}>
+      <a class="course-card course-card--coral" href={withBase(`/assessments/${assessment.id}/`)}>
         <span class="course-card__header">
           <span class="course-card__num">Assessment {String(index + 1).padStart(2, "0")}</span>
           {assessment.data.weight != null && <span class="course-card__weight">{assessment.data.weight}%</span>}
@@ -19,7 +19,7 @@ const visible = assessments.sort((a, b) => a.data.week - b.data.week);
         {assessment.data.description && <span class="course-card__desc">{assessment.data.description}</span>}
         {assessment.data.weight != null && (
           <span class="course-card__meta">
-            Due {formatCourseDate(assessment.data.due)}
+            Due {dueLabel(assessment.data)}
             {assessment.data.draft && " · Draft"}
           </span>
         )}

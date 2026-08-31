@@ -1,0 +1,12 @@
+---
+import ContentLayout, { type ContentLayoutProps } from "astro-theme-university/layouts/ContentLayout.astro";
+import SearchEnhance from "../components/SearchEnhance.astro";
+import "../styles/site.css";
+
+type Props = ContentLayoutProps;
+---
+
+<ContentLayout {...Astro.props}>
+  <SearchEnhance slot="head" />
+  <slot />
+</ContentLayout>

@@ -24,7 +24,7 @@ export const siteConfig = defineSiteConfig({
   colorScheme: "light",
 
   links: [
-    { text: "Home", href: "/" },
+    { text: "Home", href: "/home/" },
     { text: sessionLabels.plural, href: "/sessions/" },
     { text: "Lectures", href: "/lectures/" },
     { text: "Assessment", href: "/assessments/" },

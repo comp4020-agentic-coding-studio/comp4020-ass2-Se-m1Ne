@@ -9,7 +9,7 @@ const visible = sessions.sort((a, b) => a.data.week - b.data.week);
 <div class="card-grid">
   {
     visible.map((session) => (
-      <a class="course-card course-card--teal" href={withBase(`/sessions/${session.id}/`)}>
+      <a class="course-card course-card--coral" href={withBase(`/sessions/${session.id}/`)}>
         <span class="course-card__num">Week {String(session.data.week).padStart(2, "0")}</span>
         <span class="course-card__title">{session.data.title}</span>
         {session.data.description && <span class="course-card__desc">{session.data.description}</span>}

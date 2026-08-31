@@ -6,7 +6,7 @@ week: 2
 date: 2027-03-01
 related:
   - sessions/02-first-review
-  - assessments/assignment-1
+  - assessments/one-rule-broken
 ---
 
 <!-- STARTER_CONTENT: replace this lecture, then remove this comment. -->

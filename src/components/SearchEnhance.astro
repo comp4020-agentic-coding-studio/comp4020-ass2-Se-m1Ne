@@ -1,0 +1,41 @@
+---
+// Augments the theme's fixed SearchDialog (astro-theme-university) with a
+// visible close button and click-outside dismissal, without editing
+// node_modules. Injected via `<slot name="head" />` on every page layout.
+// Escape-to-close is already provided by the theme; this only adds to it.
+---
+
+<script>
+  function enhanceSearchDialog(dialog: HTMLDialogElement) {
+    if (dialog.dataset.atSearchCloseEnhanced === "true") return;
+    dialog.dataset.atSearchCloseEnhanced = "true";
+
+    const header = dialog.querySelector(".at-search-header");
+    if (header && !header.querySelector(".at-search-close")) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "at-search-close";
+      button.setAttribute("aria-label", "Close search");
+      button.innerHTML =
+        '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"></line><line x1="19" y1="5" x2="5" y2="19"></line></svg>';
+      button.addEventListener("click", () => dialog.close());
+      header.append(button);
+    }
+
+    // The panel fills the dialog's box edge-to-edge (`.at-search-dialog` has
+    // no padding and `.at-search-panel` has no explicit width), so a click
+    // only ever reaches the dialog element itself when it lands on the
+    // backdrop outside the visible panel. Clicks inside the panel always
+    // target a descendant and never bubble here as `event.target === dialog`.
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  }
+
+  function enhanceAllSearchDialogs() {
+    document.querySelectorAll<HTMLDialogElement>("[data-at-search-dialog]").forEach(enhanceSearchDialog);
+  }
+
+  enhanceAllSearchDialogs();
+  document.addEventListener("astro:page-load", enhanceAllSearchDialogs);
+</script>
