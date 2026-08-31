@@ -9,7 +9,7 @@ const visible = lectures.sort((a, b) => a.data.date.getTime() - b.data.date.getT
 <div class="lecture-list">
   {
     visible.map((lecture) => (
-      <a class="course-card course-card--row course-card--blue" href={withBase(`/lectures/${lecture.id}/`)}>
+      <a class="course-card course-card--row course-card--teal" href={withBase(`/lectures/${lecture.id}/`)}>
         <span class="course-card__num">Week {String(lecture.data.week).padStart(2, "0")}</span>
         <span class="course-card__body">
           <span class="course-card__title">{lecture.data.title}</span>

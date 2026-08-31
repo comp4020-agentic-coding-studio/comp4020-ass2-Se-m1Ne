@@ -12,29 +12,36 @@
  * background. */
 @import url("astro-theme-university/styles/deck.css");
 
-/* Picture Books That Misbehave — bring the deck into the same warm-paper
- * system as the course website rather than leaving it on deck.css's default
- * dark surface. Every rule here matches the selector deck.css itself uses
- * for the same content (including its zero-specificity `:where(.reveal
- * .slides) section` prefix), so nothing needs `!important`: equal
- * specificity plus later source order is enough to win.
+/* Picture Books That Misbehave — bring the deck into the same cool-neutral,
+ * teal-led system as the course website rather than leaving it on
+ * deck.css's default dark surface or the site's earlier warm-paper look.
+ * Every rule here matches the selector deck.css itself uses for the same
+ * content (including its zero-specificity `:where(.reveal .slides) section`
+ * prefix), so nothing needs `!important`: equal specificity plus later
+ * source order is enough to win.
  *
- * `--at-primary` is still the Slop gold (see astro-theme-slop/slop.css), so
- * the deck's existing gold accents --- the heading highlight box, rules,
- * links --- carry over unchanged; only the surface and ink flip from dark
- * to the site's paper and near-black text.
+ * deck.css treats `--at-primary` as its one accent token --- heading
+ * colour, links, the title box, code and quote borders all derive from it
+ * directly, with no separate "course" slot the way the site's own tokens
+ * split institutional gold (`--at-primary`) from the course accent
+ * (`--at-accent`/`--at-heading`). Deck pages render no Slop University
+ * chrome of their own (no nav, no crest), so overriding `--at-primary`
+ * here only ever affects slide content, never institutional branding ---
+ * it's safe to point it at the course's own teal so the deck reads as
+ * teal-led rather than Slop-gold-led, matching the website.
  */
 :root {
   color-scheme: light;
 
-  --course-accent-red: #c94f43;
-  --course-accent-blue: #55758b;
-  --course-accent-mustard: #c89b3c;
+  --course-teal: #315c59;
+  --course-coral: #d76a5b;
+  --course-mustard: #d0a34a;
 
-  --r-background-color: #f4f1ea;
-  --r-main-color: #25231f;
-  --at-divider: rgb(37 35 31 / 14%);
-  --at-text-secondary: rgb(37 35 31 / 78%);
+  --at-primary: var(--course-teal);
+  --r-background-color: #eef1f0;
+  --r-main-color: #202321;
+  --at-divider: rgb(32 35 33 / 14%);
+  --at-text-secondary: rgb(32 35 33 / 78%);
 }
 
 /* Code blocks: deck.css picks the dark shiki colour arm unconditionally
@@ -60,11 +67,11 @@
 }
 
 /* Opening/impact slide: deck.css fills it edge-to-edge with solid brand
-   gold. On a site that keeps accent colour to small elements rather than
+   colour. On a site that keeps accent colour to small elements rather than
    large fills, that reads as a different, louder system from the rest of
    the deck --- so this slide keeps the shared paper background instead,
-   and lets the existing gold heading box (deck.css's plain `h1` rule,
-   unchanged) carry the accent. */
+   and lets the existing teal heading box (deck.css's plain `h1` rule,
+   unchanged, now teal via `--at-primary` above) carry the accent. */
 :where(.reveal .slides) section.impact {
   background-color: var(--r-background-color);
   color: var(--r-main-color);
@@ -76,11 +83,11 @@
 
 :where(.reveal .slides) section.impact strong,
 :where(.reveal .slides) section.impact em {
-  color: var(--at-primary);
+  color: var(--course-coral);
 }
 
 :where(.reveal .slides) section.impact a {
-  color: var(--at-primary);
+  color: var(--course-coral);
   text-decoration: underline;
 }
 
@@ -111,10 +118,10 @@
   height: 5px;
   margin: 0 auto 1.5rem;
   border-radius: 2px;
-  background: var(--course-accent-blue);
+  background: var(--course-teal);
 }
 
 :where(.reveal .slides) section .image-credit,
 :where(.reveal .slides) section .image-credit a {
-  color: rgb(37 35 31 / 60%);
+  color: rgb(32 35 33 / 60%);
 }

@@ -10,7 +10,7 @@ const visible = assessments.sort((a, b) => a.data.week - b.data.week);
 <div class="card-grid">
   {
     visible.map((assessment, index) => (
-      <a class="course-card course-card--mustard" href={withBase(`/assessments/${assessment.id}/`)}>
+      <a class="course-card course-card--teal" href={withBase(`/assessments/${assessment.id}/`)}>
         <span class="course-card__header">
           <span class="course-card__num">Assessment {String(index + 1).padStart(2, "0")}</span>
           {assessment.data.weight != null && <span class="course-card__weight">{assessment.data.weight}%</span>}

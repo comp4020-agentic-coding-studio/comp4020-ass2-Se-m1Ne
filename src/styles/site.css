@@ -34,19 +34,33 @@
      widths, while `.at-main p`/`li` below cap the reading measure. */
   --at-content-width: 72rem;
 
-  --course-accent-red: #c94f43;
-  --course-accent-blue: #55758b;
-  --course-accent-mustard: #c89b3c;
+  /* The course's own palette, independent of Slop University's gold/bronze
+     institutional brand (still `--at-primary`/`--at-secondary`, untouched,
+     and reserved for genuinely institutional elements). Teal carries most
+     of the course's own colour; coral and mustard stay occasional accents. */
+  --course-teal: #315c59;
+  --course-teal-hover: oklch(from var(--course-teal) calc(l - 0.06) c h);
+  --course-coral: #d76a5b;
+  --course-mustard: #d0a34a;
 
-  /* One warm-paper surface for the whole site — see the file comment. */
-  --at-bg: #f4f1ea;
-  --at-bg-elevated: #ffffff;
-  --at-text: #25231f;
-  --at-text-secondary: #4a473f;
-  --at-text-muted: #6e6a60;
-  --at-border: #d9d3c2;
-  --at-divider: #e3ddce;
-  --at-link: #55758b;
+  /* One cool-neutral surface for the whole site — see the file comment. */
+  --at-bg: #eef1f0;
+  --at-bg-elevated: #fbfbf8;
+  --at-text: #202321;
+  --at-text-secondary: #454842;
+  --at-text-muted: #63665e;
+  --at-border: #d6dad7;
+  --at-divider: #dfe3e0;
+
+  /* Headings, links and the site's one interactive accent all read as the
+     course's teal rather than the institutional gold `--at-primary`
+     otherwise supplies by default. */
+  --at-heading: var(--course-teal);
+  --at-link: var(--course-teal);
+  --at-link-hover: var(--course-teal-hover);
+  --at-accent: var(--course-teal);
+  --at-accent-hover: var(--course-teal-hover);
+  --at-accent-soft: rgb(49 92 89 / 10%);
 }
 
 /* The theme's own full-height accent rule at the content column's edge
@@ -63,7 +77,6 @@ body::after {
    separated from it by a hairline rather than a colour change.
    --------------------------------------------------------------- */
 .at-nav {
-  --at-link: var(--at-primary);
   border-block-end: 1px solid var(--at-divider);
 }
 
@@ -127,7 +140,7 @@ body::after {
   width: 28px;
   height: 5px;
   border-radius: 2px;
-  background: var(--course-accent-blue);
+  background: var(--course-coral);
 }
 
 .home-hero__question-label {
@@ -136,7 +149,7 @@ body::after {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--course-accent-blue);
+  color: var(--course-coral);
   margin-block-end: var(--at-spacing-sm);
 }
 
@@ -180,7 +193,7 @@ body::after {
 .progression__num {
   font-size: var(--at-font-size-xs);
   font-variant-numeric: tabular-nums;
-  color: var(--course-accent-mustard);
+  color: var(--course-mustard);
 }
 
 /* ---------------------------------------------------------------
@@ -210,19 +223,19 @@ body::after {
   width: 28px;
   height: 5px;
   border-radius: 2px;
-  background: var(--course-card-accent, var(--course-accent-mustard));
+  background: var(--course-card-accent, var(--course-teal));
 }
 
-.course-card--red {
-  --course-card-accent: var(--course-accent-red);
+.course-card--teal {
+  --course-card-accent: var(--course-teal);
 }
 
-.course-card--blue {
-  --course-card-accent: var(--course-accent-blue);
+.course-card--coral {
+  --course-card-accent: var(--course-coral);
 }
 
 .course-card--mustard {
-  --course-card-accent: var(--course-accent-mustard);
+  --course-card-accent: var(--course-mustard);
 }
 
 .course-card__num {
@@ -230,7 +243,7 @@ body::after {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--course-card-accent, var(--course-accent-mustard));
+  color: var(--course-card-accent, var(--course-teal));
 }
 
 .course-card__header {
@@ -272,18 +285,18 @@ body::after {
 
 a.course-card:hover,
 a.course-card:focus-visible {
-  border-color: var(--course-card-accent, var(--course-accent-mustard));
+  border-color: var(--course-card-accent, var(--course-teal));
 }
 
 a.course-card:hover .course-card__title,
 a.course-card:focus-visible .course-card__title,
 a.course-card:hover .course-card__arrow,
 a.course-card:focus-visible .course-card__arrow {
-  color: var(--course-card-accent, var(--course-accent-mustard));
+  color: var(--course-card-accent, var(--course-teal));
 }
 
 a.course-card:focus-visible {
-  outline: 2px solid var(--course-card-accent, var(--course-accent-mustard));
+  outline: 2px solid var(--course-card-accent, var(--course-teal));
   outline-offset: 2px;
 }
 
