@@ -7,7 +7,6 @@ import { withBase } from "astro-theme-university/url";
 import TeachingTeam from "../../components/TeachingTeam.astro";
 import SequentialNavigation from "../../components/SequentialNavigation.astro";
 import { graphCollections, siteConfig } from "../../site-config";
-import { pageTurn } from "../../lib/page-turn";
 import "../../styles/site.css";
 
 export async function getStaticPaths() {
@@ -29,7 +28,7 @@ const nextLecture = lectureIndex < orderedLectures.length - 1 ? orderedLectures[
 
 <ContentLayout title={title} description={lecture.data.description} {...siteConfig}>
   {lecture.data.slides && <p><a href={withBase(lecture.data.slides)}>Open the slides</a></p>}
-  <div class="sequential-page-surface" transition:name="sequential-page-surface" transition:animate={pageTurn}>
+  <div class="sequential-page-surface">
     <Content />
     <TeachingTeam teachers={lecture.data.teachers} />
     <RelatedContent entry={lecture} collections={graphCollections} />

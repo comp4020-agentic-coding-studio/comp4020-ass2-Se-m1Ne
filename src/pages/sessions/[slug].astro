@@ -8,7 +8,6 @@ import ContentLayout from "../../layouts/ContentPageLayout.astro";
 import TeachingTeam from "../../components/TeachingTeam.astro";
 import SequentialNavigation from "../../components/SequentialNavigation.astro";
 import { graphCollections, siteConfig } from "../../site-config";
-import { pageTurn } from "../../lib/page-turn";
 import "../../styles/site.css";
 
 export async function getStaticPaths() {
@@ -30,7 +29,7 @@ const nextSession = sessionIndex < orderedSessions.length - 1 ? orderedSessions[
   description={session.data.description}
   {...siteConfig}
 >
-  <div class="sequential-page-surface" transition:name="sequential-page-surface" transition:animate={pageTurn}>
+  <div class="sequential-page-surface">
     <Content />
     <SpecList spec={session.data.spec}>
       What you bring to the session. Written so a reader can tell whether it

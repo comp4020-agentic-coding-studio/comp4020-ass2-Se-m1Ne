@@ -9,7 +9,6 @@ import ContentLayout from "../../layouts/ContentPageLayout.astro";
 import MarkingModel from "../../components/MarkingModel.astro";
 import SequentialNavigation from "../../components/SequentialNavigation.astro";
 import { dueLabel } from "../../lib/assessment-due";
-import { pageTurn } from "../../lib/page-turn";
 import { graphCollections, siteConfig } from "../../site-config";
 import "../../styles/site.css";
 
@@ -46,7 +45,7 @@ const nextAssessment =
     )
   }
   <p><strong>Due:</strong> {dueLabel(assessment.data)} · <strong>Weight:</strong> {assessment.data.weight}%</p>
-  <div class="sequential-page-surface" transition:name="sequential-page-surface" transition:animate={pageTurn}>
+  <div class="sequential-page-surface">
     <Content />
     <SpecList spec={assessment.data.spec}>
       The brief poses the problem and leaves room for a response. The spec is

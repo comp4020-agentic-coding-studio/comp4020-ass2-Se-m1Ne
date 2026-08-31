@@ -3,10 +3,11 @@
 // pages. Direction is forced via `astro:before-preparation` below, keyed off
 // `data-nav-direction` on the clicked link, so ordinary navigation (top nav,
 // index pages, related-content links) is unaffected and keeps its current
-// behaviour. The page-turn transition itself lives on the content-surface
-// wrapper each detail page renders around this component (see
-// `../lib/page-turn.ts` and the three `[slug].astro` pages) so the whole
-// content page moves as one piece, not just this bar — see CLAUDE.md.
+// behaviour. The same handler sets `data-page-turn="next"|"prev"` on <html>,
+// which is what site.css keys its clip-path page-peel animation to (played
+// on the browser's own ::view-transition-old/new(root) snapshots — no
+// cloned content), and creates the one small decorative fold cue
+// (../lib/page-turn-fold.ts) — see CLAUDE.md.
 interface NavTarget {
   href: string;
   label: string;
@@ -57,6 +58,8 @@ const { previous, next, positionLabel } = Astro.props;
 </nav>
 
 <script>
+  import { createPageTurnFold } from "../lib/page-turn-fold";
+
   // Runs once per document even across client-side navigations (the flag
   // lives on <html>, which persists across Astro's view-transition swaps).
   if (!document.documentElement.dataset.sequentialNavPatched) {
@@ -69,6 +72,18 @@ const { previous, next, positionLabel } = Astro.props;
 
       if (direction === "prev") event.direction = "back";
       else if (direction === "next") event.direction = "forward";
+
+      // Scope the page-peel animation (site.css) to these links only. Cleared
+      // with a timeout rather than on astro:after-swap: the swap event fires
+      // before the peel animation finishes, and clearing the attribute that
+      // early would let the default crossfade flash in underneath it.
+      if (direction === "prev" || direction === "next") {
+        document.documentElement.dataset.pageTurn = direction;
+        createPageTurnFold(direction);
+        window.setTimeout(() => {
+          delete document.documentElement.dataset.pageTurn;
+        }, 500);
+      }
     });
   }
 </script>
