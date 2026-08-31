@@ -1,5 +1,5 @@
 ---
-title: Read Me Again
+title: "Assignment 2: Read Me Again"
 description:
   A prototype whose reading changes when a reader experiences it a second
   time

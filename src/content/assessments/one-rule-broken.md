@@ -1,5 +1,5 @@
 ---
-title: "One Rule, Broken"
+title: "Assignment 1: One Rule, Broken"
 description:
   A short prototype that breaks exactly one picture-book convention on
   purpose

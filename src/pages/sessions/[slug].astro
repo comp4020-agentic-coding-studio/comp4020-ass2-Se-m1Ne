@@ -5,7 +5,7 @@ import RelatedContent from "astro-course-university/components/RelatedContent.as
 import SpecList from "astro-course-university/components/SpecList.astro";
 import ContentLayout from "../../layouts/ContentPageLayout.astro";
 import TeachingTeam from "../../components/TeachingTeam.astro";
-import { graphCollections, sessionLabels, siteConfig } from "../../site-config";
+import { graphCollections, siteConfig } from "../../site-config";
 import "../../styles/site.css";
 
 export async function getStaticPaths() {
@@ -18,7 +18,7 @@ const { Content } = await render(session);
 ---
 
 <ContentLayout
-  title={`Week ${session.data.week} ${sessionLabels.singular}: ${session.data.title}`}
+  title={`Week ${session.data.week}: ${session.data.title}`}
   description={session.data.description}
   {...siteConfig}
 >

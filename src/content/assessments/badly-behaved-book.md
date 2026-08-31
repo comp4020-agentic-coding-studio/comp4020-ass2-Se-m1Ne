@@ -1,5 +1,5 @@
 ---
-title: The Badly Behaved Book
+title: "Assignment 3: The Badly Behaved Book"
 description:
   The final, resolved picture-book work, refined through at least one round
   of reader testing
