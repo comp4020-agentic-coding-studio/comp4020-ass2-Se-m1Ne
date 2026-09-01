@@ -1,0 +1,66 @@
+---
+import BaseLayout from "astro-theme-university/layouts/BaseLayout.astro";
+import { getPublishedCollection } from "astro-course-university/content";
+import { withBase } from "astro-theme-university/url";
+import SearchEnhance from "../../components/SearchEnhance.astro";
+import { siteConfig } from "../../site-config";
+import { learningOutcomes } from "../../lib/learning-outcomes";
+import "../../styles/site.css";
+
+export async function getStaticPaths() {
+  return learningOutcomes.map((outcome) => ({ params: { slug: outcome.slug }, props: { outcome } }));
+}
+
+const { outcome } = Astro.props;
+
+const sessions = await getPublishedCollection("sessions");
+const lectures = await getPublishedCollection("lectures");
+
+const weekEntries = outcome.weeks.map((week) => {
+  const session = sessions.find((s) => s.data.week === week);
+  const lecture = lectures.find((l) => l.data.week === week);
+  const label = `Week ${String(week).padStart(2, "0")}`;
+  return {
+    week,
+    label,
+    title: session?.data.title ?? lecture?.data.title ?? label,
+    description: session?.data.description,
+    sessionHref: session && withBase(`/sessions/${session.id}/`),
+    lectureHref: lecture && withBase(`/lectures/${lecture.id}/`),
+  };
+});
+---
+
+<BaseLayout title={`Learning Outcome ${outcome.number}: ${outcome.title}`} description={outcome.description} {...siteConfig}>
+  <SearchEnhance slot="head" />
+  <p class="course-kicker">Learning Outcome {outcome.number}</p>
+  <h1>{outcome.title}</h1>
+  <p class="lead">{outcome.description}</p>
+  <p>{outcome.developedLabel}</p>
+
+  <div class="card-grid">
+    {
+      weekEntries.map((entry) => (
+        <div class="course-card course-card--coral">
+          <span class="course-card__num">{entry.label}</span>
+          <span class="course-card__title">{entry.title}</span>
+          {entry.description && <span class="course-card__desc">{entry.description}</span>}
+          <span class="lo-week-links">
+            {entry.sessionHref && (
+              <a class="lo-week-link" href={entry.sessionHref} aria-label={`Explore ${entry.label}: ${entry.title}`}>
+                Explore Week
+              </a>
+            )}
+            {entry.lectureHref && (
+              <a class="lo-week-link" href={entry.lectureHref} aria-label={`Open the ${entry.label} lecture`}>
+                Open Lecture
+              </a>
+            )}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+
+  <p><a href={withBase("/home/")}>← Back to Home</a></p>
+</BaseLayout>

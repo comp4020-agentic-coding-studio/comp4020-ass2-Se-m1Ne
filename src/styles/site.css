@@ -464,6 +464,46 @@ a.course-card:focus-visible {
 }
 
 /* ---------------------------------------------------------------
+   Learning Outcome pages — each Home "What will you learn?" card
+   links to one of these; every Week entry offers two destinations
+   (Week, Lecture) as separate links so the card itself stays a plain,
+   non-link container rather than nesting a link inside a link.
+   --------------------------------------------------------------- */
+
+.lo-week-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--at-spacing-sm);
+  margin-block-start: 0.25em;
+}
+
+.lo-week-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35em 0.9em;
+  border: 1px solid var(--course-teal);
+  border-radius: 999px;
+  color: var(--course-teal);
+  font-size: var(--at-font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Filled hover/focus state reads from the same fixed teal used by the
+   cover CTA's hover — see --course-teal-fill's own comment above. */
+.lo-week-link:hover,
+.lo-week-link:focus-visible {
+  background: var(--course-teal-fill);
+  border-color: var(--course-teal-fill);
+  color: #ffffff;
+}
+
+.lo-week-link:focus-visible {
+  outline: 2px solid var(--course-teal);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------
    Search dialog — close button added by SearchEnhance.astro alongside
    the theme's own fixed markup, plus one contrast fix for the theme's
    own result-excerpt highlight.

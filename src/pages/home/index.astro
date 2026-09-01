@@ -3,6 +3,7 @@ import BaseLayout from "astro-theme-university/layouts/BaseLayout.astro";
 import { withBase } from "astro-theme-university/url";
 import SearchEnhance from "../../components/SearchEnhance.astro";
 import { courseMeta } from "../../course-config";
+import { learningOutcomes } from "../../lib/learning-outcomes";
 import { sessionLabels, siteConfig } from "../../site-config";
 import "../../styles/site.css";
 
@@ -24,30 +25,6 @@ const audiences = [
   "comics and sequential art",
   "storytelling",
   "education",
-];
-
-const outcomes = [
-  {
-    title: "Read the rules",
-    description: "Identify visual, textual, spatial and narrative conventions in picture books.",
-  },
-  {
-    title: "Break with purpose",
-    description: "Deliberately break a convention to create a specific narrative or reader effect.",
-  },
-  {
-    title: "Design across words, pictures and pages",
-    description:
-      "Work with the relationships between words, images, sequence, page turns and the physical page.",
-  },
-  {
-    title: "Design for the reader",
-    description: "Predict and test how readers notice, interpret, navigate and respond.",
-  },
-  {
-    title: "Make a coherent misbehaving book",
-    description: "Create original work where rule-breaking supports the story rather than existing only as novelty.",
-  },
 ];
 
 const entries = [
@@ -127,12 +104,16 @@ const entries = [
   <h2>What will you learn?</h2>
   <div class="card-grid">
     {
-      outcomes.map((outcome, index) => (
-        <div class="course-card course-card--teal">
-          <span class="course-card__num">{String(index + 1).padStart(2, "0")}</span>
+      learningOutcomes.map((outcome) => (
+        <a class="course-card course-card--teal" href={withBase(`/learning-outcomes/${outcome.slug}/`)}>
+          <span class="course-card__num">{outcome.number}</span>
           <span class="course-card__title">{outcome.title}</span>
           <span class="course-card__desc">{outcome.description}</span>
-        </div>
+          <span class="course-card__meta">{outcome.weekRangeLabel}</span>
+          <span class="course-card__arrow" aria-hidden="true">
+            →
+          </span>
+        </a>
       ))
     }
   </div>
