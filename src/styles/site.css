@@ -154,19 +154,66 @@ body::after {
 .home-hero {
   display: grid;
   grid-template-columns: 1fr;
-  align-items: start;
-  gap: var(--at-spacing-xl);
+  /* Explicit spacer rows (the unnamed "." rows below) give the kicker→title
+     gap and the intro→question gap independent sizes — the kicker→title one
+     tight, the intro→question one unchanged from before — without a single
+     `gap` value forcing both boundaries to match. */
+  grid-template-rows: auto var(--at-spacing-sm) auto var(--at-spacing-xl) auto;
+  grid-template-areas:
+    "kicker"
+    "."
+    "intro"
+    "."
+    "question";
   margin-block-end: var(--at-spacing-xl);
 }
 
 @media (width >= 900px) {
   .home-hero {
     grid-template-columns: 1.3fr 1fr;
-    gap: var(--at-spacing-2xl);
+    /* The kicker sits alone in row 1; the intro copy and the question card
+       share the row below, so the card's own natural height starts at the
+       same line as the title — a position match, not a stretched/matched
+       height. */
+    grid-template-rows: auto var(--at-spacing-sm) auto;
+    grid-template-areas:
+      "kicker ."
+      ".      ."
+      "intro  question";
+    align-items: start;
+    column-gap: var(--at-spacing-2xl);
+  }
+}
+
+/* Slightly enlarge SLOP2261 on Home only — scoped to this hero so the
+   shared .course-kicker rule (also used on Learning Outcome pages) stays
+   untouched elsewhere. */
+.home-hero > .course-kicker {
+  grid-area: kicker;
+  font-size: 1rem;
+}
+
+.home-hero__intro {
+  grid-area: intro;
+}
+
+/* Tighten the SLOP2261 / title relationship on Home only — scoped to this
+   hero so the theme's default h1 spacing stays untouched elsewhere. On
+   desktop the title's own top margin is zeroed so its rendered top lands
+   exactly on the grid line shared with the question card; the tight
+   kicker→title gap there comes from the row-gap spacer above instead. */
+.home-hero__intro h1 {
+  margin-block-start: 0.2em;
+}
+
+@media (width >= 900px) {
+  .home-hero__intro h1 {
+    margin-block-start: 0;
   }
 }
 
 .home-hero__question {
+  grid-area: question;
   position: relative;
   background: var(--at-bg-elevated);
   border: 1px solid var(--at-border);
