@@ -17,11 +17,13 @@ export const siteConfig = defineSiteConfig({
   ...slopBranding,
   name: "Slop University",
 
-  // The course uses one fixed visual theme; the theme's own light/dark
-  // toggle (and its system-preference auto-detection) is switched off here
-  // rather than per page, since every page spreads `siteConfig` into
-  // `BaseLayout` or `ContentLayout`.
-  colorScheme: "light",
+  // The theme's own light/dark toggle (footer button, localStorage
+  // persistence, prefers-color-scheme default, flash-prevention script) is
+  // enabled here rather than per page, since every page spreads
+  // `siteConfig` into `BaseLayout` or `ContentLayout`. The course's own
+  // tokens in `styles/site.css` supply the dark palette the toggle switches
+  // to — see that file's header comment.
+  colorScheme: "auto",
 
   links: [
     { text: "Home", href: "/home/" },

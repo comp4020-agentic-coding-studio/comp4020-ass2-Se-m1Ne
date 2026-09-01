@@ -359,6 +359,13 @@ numbering). Coral is the primary card and UI interaction accent (card top
 markers, hover/focus borders, the active-nav marker). Soft mustard is a rare
 tertiary colour only — it must not be a repeated card or generic UI accent.
 
+The site supports light and dark modes (a small header/footer toggle,
+persisted choice, `prefers-color-scheme` default). Both modes use the same
+cool-neutral + teal + coral identity — dark mode is the same course at
+night, not a different palette. Dark mode must never revert to the
+starter theme's default gold/dark palette, and must never use pure black,
+neon accents, or a gaming-style dark UI.
+
 The Slop University crest is fixed institutional branding (hardcoded gold,
 non-`currentColor`, per README policy) and stays untouched. It is the only
 gold allowed on the site; no starter-theme gold should remain in card

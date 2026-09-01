@@ -8,11 +8,12 @@
  * fixed platform file.
  *
  * Every semantic colour token the theme defines (`--at-bg`, `--at-text`,
- * ...) is normally a `light-dark()` pair tied to the theme's own toggle.
- * This course commits to one fixed appearance instead: the toggle is
- * switched off in `site-config.ts` (`colorScheme: "light"`, spread into
- * every page's layout), and every token below is a flat value rather
- * than a `light-dark()` pair.
+ * ...) is a `light-dark()` pair tied to the theme's own toggle, which is
+ * enabled in `site-config.ts` (`colorScheme: "auto"`). The tokens below
+ * follow the same pattern: light values are the approved light mode,
+ * unchanged; dark values are this course's own dark counterpart, using
+ * the same teal/coral/mustard identity rather than the theme's default
+ * dark palette.
  *
  * `--at-bg` is set once, here, and nowhere else: the theme's own
  * `html { background-color: var(--at-bg) }` and `.at-nav { background:
@@ -37,20 +38,42 @@
   /* The course's own palette, independent of Slop University's gold/bronze
      institutional brand (still `--at-primary`/`--at-secondary`, untouched,
      and reserved for genuinely institutional elements). Teal carries most
-     of the course's own colour; coral and mustard stay occasional accents. */
-  --course-teal: #315c59;
-  --course-teal-hover: oklch(from var(--course-teal) calc(l - 0.06) c h);
-  --course-coral: #d76a5b;
-  --course-mustard: #d0a34a;
+     of the course's own colour; coral and mustard stay occasional accents.
+     Dark-mode values keep the same hue family — never the theme's default
+     dark palette, and never pure black/neon. Hover direction flips with
+     the theme (darken on light paper, lighten on dark paper) so hover
+     states move away from the background either way. */
+  --course-teal: light-dark(#315c59, #7faeaa);
+  --course-teal-hover: light-dark(
+    oklch(from var(--course-teal) calc(l - 0.06) c h),
+    oklch(from var(--course-teal) calc(l + 0.08) c h)
+  );
+  --course-coral: light-dark(#d76a5b, #e58a7d);
+  --course-mustard: light-dark(#d0a34a, #d6b765);
 
-  /* One cool-neutral surface for the whole site — see the file comment. */
-  --at-bg: #eef1f0;
-  --at-bg-elevated: #fbfbf8;
-  --at-text: #202321;
-  --at-text-secondary: #454842;
-  --at-text-muted: #63665e;
-  --at-border: #d6dad7;
-  --at-divider: #dfe3e0;
+  /* A small set of surfaces are filled solidly with teal and carry white
+     text (the marking-table header, the cover CTA's hover state). Those
+     need a teal dark enough for white text in both themes, so they read
+     from this fixed value rather than `--course-teal`, which turns light
+     in dark mode and would fail that contrast. Not itself theme-aware on
+     purpose. */
+  --course-teal-fill: #315c59;
+
+  /* Dark ink for text that sits on a coral fill (the cover CTA, text
+     selection). Coral stays a light-to-mid accent in both themes, so the
+     site's light-mode ink is the correct foreground in both — fixed for
+     the same reason as --course-teal-fill above. */
+  --course-ink: #202321;
+
+  /* One cool-neutral surface for the whole site — see the file comment.
+     Dark values stay a deep cool teal-neutral, never pure black. */
+  --at-bg: light-dark(#eef1f0, #17201f);
+  --at-bg-elevated: light-dark(#fbfbf8, #202b29);
+  --at-text: light-dark(#202321, #e7ece9);
+  --at-text-secondary: light-dark(#454842, #b7bdb8);
+  --at-text-muted: light-dark(#63665e, #93998f);
+  --at-border: light-dark(#d6dad7, #34403d);
+  --at-divider: light-dark(#dfe3e0, #2b3634);
 
   /* Headings, links and the site's one interactive accent all read as the
      course's teal rather than the institutional gold `--at-primary`
@@ -60,22 +83,23 @@
   --at-link-hover: var(--course-teal-hover);
   --at-accent: var(--course-teal);
   --at-accent-hover: var(--course-teal-hover);
-  --at-accent-soft: rgb(49 92 89 / 10%);
+  --at-accent-soft: light-dark(rgb(49 92 89 / 10%), rgb(127 174 170 / 14%));
 
   /* components.css derives the marking-table header from --at-primary
      (institutional gold) by default; give it the course's own teal instead
      so no table on the site reads in the untouched brand colour. White text
-     on this teal is ~7.5:1, comfortably past AA. */
-  --at-table-header-bg: var(--course-teal);
+     on --course-teal-fill is ~7.5:1 in both themes, comfortably past AA. */
+  --at-table-header-bg: var(--course-teal-fill);
   --at-table-header-text: #ffffff;
 }
 
 /* base.css's own ::selection is tied to --at-primary (institutional gold);
-   restated here as the course's coral with the site's own dark text, ~4.6:1
-   contrast, passing AA for body text. */
+   restated here as the course's coral with the site's own dark ink, ~4.6:1
+   contrast in light mode and ~6.2:1 in dark mode (coral stays light-to-mid
+   in both, so the ink stays fixed rather than following --at-text). */
 ::selection {
   background: var(--course-coral);
-  color: var(--at-text);
+  color: var(--course-ink);
 }
 
 /* The theme's own full-height accent rule at the content column's edge
@@ -440,9 +464,19 @@ a.course-card:focus-visible {
 }
 
 /* ---------------------------------------------------------------
-   Search dialog close button — added by SearchEnhance.astro alongside
-   the theme's own fixed markup, never by editing it directly.
+   Search dialog — close button added by SearchEnhance.astro alongside
+   the theme's own fixed markup, plus one contrast fix for the theme's
+   own result-excerpt highlight.
    --------------------------------------------------------------- */
+
+/* The theme colours a matched search term with --at-accent text on an
+   --at-accent-soft background — both teal-derived. In dark mode
+   --course-teal turns light, so teal-on-teal-tinted-dark drops below
+   4.5:1; the ordinary (already-AA) result text colour keeps the
+   highlight legible in both themes without losing the tinted background. */
+.at-search-result-excerpt mark {
+  color: var(--at-text);
+}
 
 .at-search-close {
   display: inline-flex;
@@ -526,13 +560,13 @@ a.course-card:focus-visible {
   padding: 0.75em 1.4em;
   border-radius: var(--at-border-radius, 6px);
   background: var(--course-coral);
-  color: var(--at-text);
+  color: var(--course-ink);
   font-weight: 700;
   text-decoration: none;
 }
 
 .cover__cta:hover {
-  background: var(--course-teal);
+  background: var(--course-teal-fill);
   color: #ffffff;
 }
 
