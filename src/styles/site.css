@@ -545,200 +545,109 @@ a.course-card:focus-visible {
 }
 
 /* ---------------------------------------------------------------
-   Cover page (`/`) — a wide editorial hero: an image panel, a
-   caption panel, a body-text panel and a margin column, ruled off
-   from one another by hairlines, with a small, deliberate set of
-   elements that cross those rules. No imagery, no gradients.
+   Cover page (`/`) — a typography-led editorial grid. The title is
+   the composition's main visual element; a narrower supporting
+   column carries the subtitle, intro and CTA. No imagery.
    --------------------------------------------------------------- */
 
 .cover {
-  display: flex;
-  flex-direction: column;
-  gap: var(--at-spacing-2xl);
-  padding-block: var(--at-spacing-xl);
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  grid-template-areas: "lead support";
+  column-gap: var(--at-spacing-2xl);
+  align-items: center;
+  min-height: 60vh;
+  padding-block: var(--at-spacing-2xl);
 }
 
-.cover__hero {
-  position: relative;
-  height: clamp(14rem, 34vh, 19rem);
-  border: 1px solid var(--at-border);
-}
-
-@media (width >= 700px) {
-  .cover__hero {
-    height: clamp(18rem, 44vh, 24rem);
+@media (width < 900px) {
+  .cover {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "lead"
+      "support";
+    row-gap: var(--at-spacing-lg);
+    min-height: 0;
   }
 }
 
-.cover__hero-spread {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: 1.3fr 1.5fr 0.5fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas:
-    "image caption margin"
-    "image text margin";
-  gap: 2px;
-  background: var(--at-border);
-}
-
-.cover__hero-panel {
-  position: relative;
+.cover__lead {
+  grid-area: lead;
   display: flex;
   flex-direction: column;
-  gap: 14%;
-  padding: 10%;
-}
-
-.cover__hero-panel--image {
-  grid-area: image;
-  background: var(--course-teal);
-}
-
-.cover__hero-panel--caption {
-  grid-area: caption;
-  background: var(--at-bg-elevated);
-}
-
-.cover__hero-panel--text {
-  grid-area: text;
-  background: var(--at-bg-elevated);
-}
-
-.cover__hero-panel--margin {
-  grid-area: margin;
-  align-items: center;
-  justify-content: center;
-  background: var(--at-bg);
-}
-
-/* Print-style corner registration marks on the image panel. */
-.cover__hero-crop {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-}
-
-.cover__hero-crop::before,
-.cover__hero-crop::after {
-  content: "";
-  position: absolute;
-  background: light-dark(rgba(255, 255, 255, 0.6), rgba(32, 35, 33, 0.5));
-}
-
-.cover__hero-crop::before {
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  transform: translateY(-50%);
-}
-
-.cover__hero-crop::after {
-  top: 0;
-  left: 50%;
-  width: 1px;
-  height: 100%;
-  transform: translateX(-50%);
-}
-
-.cover__hero-crop--tl {
-  top: 12%;
-  left: 8%;
-}
-
-.cover__hero-crop--br {
-  right: 8%;
-  bottom: 12%;
-}
-
-/* A thin marginalia rule in the margin column. */
-.cover__hero-tick {
-  width: 2px;
-  height: 34%;
-  background: var(--course-teal);
-}
-
-/* Small blocks standing in for lines of text/caption. */
-.cover__hero-line {
-  display: block;
-  height: 12%;
-  max-height: 0.45rem;
-  width: 80%;
-  border-radius: 1px;
-  background: var(--at-border);
-}
-
-.cover__hero-panel--caption .cover__hero-line:nth-child(2),
-.cover__hero-panel--text .cover__hero-line:nth-child(2) {
-  width: 62%;
-}
-
-.cover__hero-panel--text .cover__hero-line:nth-child(3) {
-  width: 70%;
-}
-
-/* Misbehaviour 1: a picture frame that does not stay inside its
-   panel — it straddles the rule between the image and caption
-   panels. */
-.cover__hero-frame {
-  position: absolute;
-  top: 12%;
-  left: 29%;
-  width: 20%;
-  height: 40%;
-  border: 3px solid var(--course-coral);
-  transform: rotate(-3deg);
-  z-index: 2;
-}
-
-/* Misbehaviour 2: a caption line that keeps going past its row and
-   into the text panel below, crossing the rule between them. */
-.cover__hero-line--escapes {
-  position: absolute;
-  top: 44%;
-  left: 50%;
-  width: 24%;
-  height: 0.45rem;
-  border-radius: 1px;
-  background: var(--course-coral);
-  z-index: 2;
-}
-
-/* Misbehaviour 3: a small editorial marker sitting above the top
-   edge of the hero, where a page number would never normally be. */
-.cover__hero-mark {
-  position: absolute;
-  top: -8px;
-  left: 90%;
-  width: 12px;
-  height: 12px;
-  background: var(--course-mustard);
-  z-index: 2;
-}
-
-.cover__intro {
-  max-inline-size: 64ch;
+  gap: var(--at-spacing-sm);
 }
 
 .cover__kicker {
-  margin: 0 0 var(--at-spacing-sm);
-  font-size: var(--at-font-size-sm);
-  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0;
+  font-size: clamp(1.1rem, 1vw + 0.7rem, 1.625rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--at-text-muted);
 }
 
+/* A short editorial rule ahead of the kicker, echoing a running head. */
+.cover__kicker::before {
+  content: "";
+  display: inline-block;
+  width: 1.75em;
+  height: 4px;
+  background: var(--course-coral);
+}
+
 .cover__title {
-  margin: 0 0 var(--at-spacing-sm);
-  font-size: clamp(2.25rem, 4vw + 1rem, 3.75rem);
-  line-height: 1.05;
+  container-type: inline-size;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.03;
   color: var(--course-teal);
 }
 
+.cover__title-line {
+  display: block;
+  /* Sized from the title's own column width (via container query units),
+     not the viewport, so the longer second line never wraps onto a third
+     line no matter how the two-column grid divides the page. */
+  font-size: clamp(2.75rem, 10.5cqi, 5.25rem);
+}
+
+@media (width >= 900px) {
+  .cover__title-line {
+    white-space: nowrap;
+  }
+}
+
+/* The one controlled rule-break in this composition: the second title
+   line steps out of the shared left margin, so the word "Misbehave"
+   is the part of the title that visibly misbehaves. */
+.cover__title-line--shift {
+  margin-inline-start: 0.5em;
+}
+
+@media (width < 900px) {
+  .cover__title-line--shift {
+    margin-inline-start: 0;
+  }
+}
+
+.cover__support {
+  grid-area: support;
+  max-inline-size: 38ch;
+}
+
+@media (width < 900px) {
+  .cover__support {
+    max-inline-size: none;
+  }
+}
+
 .cover__subtitle {
-  margin: 0 0 var(--at-spacing-lg);
+  margin: 0 0 var(--at-spacing-md);
   max-inline-size: none;
   font-size: 1.25rem;
   font-weight: 600;
@@ -746,8 +655,8 @@ a.course-card:focus-visible {
 }
 
 .cover__desc {
-  max-inline-size: 46ch;
-  margin: 0 0 var(--at-spacing-xl);
+  max-inline-size: none;
+  margin: 0 0 var(--at-spacing-lg);
   color: var(--at-text-secondary);
 }
 

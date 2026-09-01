@@ -9,39 +9,27 @@ import "../styles/site.css";
 // The cover's intro is one sentence lifted verbatim from the course's own
 // approved description (course-config.ts) rather than newly written copy.
 const introSentence = `${courseMeta.description.split(". ")[0]}.`;
+
+// The title is split across two display lines for the Cover composition
+// only — same words, no new copy — so it can act as the page's main visual
+// element instead of a single long line.
+const titleWords = courseMeta.title.split(" ");
+const titleMid = Math.ceil(titleWords.length / 2);
+const titleLine1 = titleWords.slice(0, titleMid).join(" ");
+const titleLine2 = titleWords.slice(titleMid).join(" ");
 ---
 
 <BaseLayout title={courseMeta.title} description="Breaking the Rules of Visual Storytelling" {...siteConfig}>
   <SearchEnhance slot="head" />
   <div class="cover">
-    <div class="cover__hero" aria-hidden="true">
-      <div class="cover__hero-spread">
-        <div class="cover__hero-panel cover__hero-panel--image">
-          <span class="cover__hero-crop cover__hero-crop--tl"></span>
-          <span class="cover__hero-crop cover__hero-crop--br"></span>
-        </div>
-        <div class="cover__hero-panel cover__hero-panel--caption">
-          <span class="cover__hero-line"></span>
-          <span class="cover__hero-line"></span>
-        </div>
-        <div class="cover__hero-panel cover__hero-panel--text">
-          <span class="cover__hero-line"></span>
-          <span class="cover__hero-line"></span>
-          <span class="cover__hero-line"></span>
-        </div>
-        <div class="cover__hero-panel cover__hero-panel--margin">
-          <span class="cover__hero-tick"></span>
-        </div>
-
-        <span class="cover__hero-frame"></span>
-        <span class="cover__hero-line cover__hero-line--escapes"></span>
-        <span class="cover__hero-mark"></span>
-      </div>
-    </div>
-
-    <div class="cover__intro">
+    <div class="cover__lead">
       <p class="cover__kicker">{courseMeta.code}</p>
-      <h1 class="cover__title">{courseMeta.title}</h1>
+      <h1 class="cover__title">
+        <span class="cover__title-line">{titleLine1}</span>
+        <span class="cover__title-line cover__title-line--shift">{titleLine2}</span>
+      </h1>
+    </div>
+    <div class="cover__support">
       <p class="cover__subtitle">Breaking the Rules of Visual Storytelling</p>
       <p class="cover__desc">{introSentence}</p>
       <a class="cover__cta" href={withBase("/home/")}>Enter the course →</a>
