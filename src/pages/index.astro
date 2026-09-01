@@ -14,18 +14,37 @@ const introSentence = `${courseMeta.description.split(". ")[0]}.`;
 <BaseLayout title={courseMeta.title} description="Breaking the Rules of Visual Storytelling" {...siteConfig}>
   <SearchEnhance slot="head" />
   <div class="cover">
+    <div class="cover__hero" aria-hidden="true">
+      <div class="cover__hero-spread">
+        <div class="cover__hero-panel cover__hero-panel--image">
+          <span class="cover__hero-crop cover__hero-crop--tl"></span>
+          <span class="cover__hero-crop cover__hero-crop--br"></span>
+        </div>
+        <div class="cover__hero-panel cover__hero-panel--caption">
+          <span class="cover__hero-line"></span>
+          <span class="cover__hero-line"></span>
+        </div>
+        <div class="cover__hero-panel cover__hero-panel--text">
+          <span class="cover__hero-line"></span>
+          <span class="cover__hero-line"></span>
+          <span class="cover__hero-line"></span>
+        </div>
+        <div class="cover__hero-panel cover__hero-panel--margin">
+          <span class="cover__hero-tick"></span>
+        </div>
+
+        <span class="cover__hero-frame"></span>
+        <span class="cover__hero-line cover__hero-line--escapes"></span>
+        <span class="cover__hero-mark"></span>
+      </div>
+    </div>
+
     <div class="cover__intro">
       <p class="cover__kicker">{courseMeta.code}</p>
       <h1 class="cover__title">{courseMeta.title}</h1>
       <p class="cover__subtitle">Breaking the Rules of Visual Storytelling</p>
       <p class="cover__desc">{introSentence}</p>
       <a class="cover__cta" href={withBase("/home/")}>Enter the course →</a>
-    </div>
-    <div class="cover__art" aria-hidden="true">
-      <span class="cover__art-page cover__art-page--teal"></span>
-      <span class="cover__art-page cover__art-page--paper"></span>
-      <span class="cover__art-frame"></span>
-      <span class="cover__art-mark"></span>
     </div>
   </div>
 </BaseLayout>

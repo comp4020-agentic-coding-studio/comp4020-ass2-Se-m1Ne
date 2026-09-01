@@ -545,23 +545,181 @@ a.course-card:focus-visible {
 }
 
 /* ---------------------------------------------------------------
-   Cover page (`/`) — an abstract, page-like composition built only
-   from flat rectangles and borders; no imagery, no gradients.
+   Cover page (`/`) — a wide editorial hero: an image panel, a
+   caption panel, a body-text panel and a margin column, ruled off
+   from one another by hairlines, with a small, deliberate set of
+   elements that cross those rules. No imagery, no gradients.
    --------------------------------------------------------------- */
 
 .cover {
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
   gap: var(--at-spacing-2xl);
-  min-height: 60vh;
   padding-block: var(--at-spacing-xl);
 }
 
-@media (width >= 900px) {
-  .cover {
-    grid-template-columns: 1.1fr 1fr;
+.cover__hero {
+  position: relative;
+  height: clamp(14rem, 34vh, 19rem);
+  border: 1px solid var(--at-border);
+}
+
+@media (width >= 700px) {
+  .cover__hero {
+    height: clamp(18rem, 44vh, 24rem);
   }
+}
+
+.cover__hero-spread {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1.3fr 1.5fr 0.5fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    "image caption margin"
+    "image text margin";
+  gap: 2px;
+  background: var(--at-border);
+}
+
+.cover__hero-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14%;
+  padding: 10%;
+}
+
+.cover__hero-panel--image {
+  grid-area: image;
+  background: var(--course-teal);
+}
+
+.cover__hero-panel--caption {
+  grid-area: caption;
+  background: var(--at-bg-elevated);
+}
+
+.cover__hero-panel--text {
+  grid-area: text;
+  background: var(--at-bg-elevated);
+}
+
+.cover__hero-panel--margin {
+  grid-area: margin;
+  align-items: center;
+  justify-content: center;
+  background: var(--at-bg);
+}
+
+/* Print-style corner registration marks on the image panel. */
+.cover__hero-crop {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+}
+
+.cover__hero-crop::before,
+.cover__hero-crop::after {
+  content: "";
+  position: absolute;
+  background: light-dark(rgba(255, 255, 255, 0.6), rgba(32, 35, 33, 0.5));
+}
+
+.cover__hero-crop::before {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.cover__hero-crop::after {
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.cover__hero-crop--tl {
+  top: 12%;
+  left: 8%;
+}
+
+.cover__hero-crop--br {
+  right: 8%;
+  bottom: 12%;
+}
+
+/* A thin marginalia rule in the margin column. */
+.cover__hero-tick {
+  width: 2px;
+  height: 34%;
+  background: var(--course-teal);
+}
+
+/* Small blocks standing in for lines of text/caption. */
+.cover__hero-line {
+  display: block;
+  height: 12%;
+  max-height: 0.45rem;
+  width: 80%;
+  border-radius: 1px;
+  background: var(--at-border);
+}
+
+.cover__hero-panel--caption .cover__hero-line:nth-child(2),
+.cover__hero-panel--text .cover__hero-line:nth-child(2) {
+  width: 62%;
+}
+
+.cover__hero-panel--text .cover__hero-line:nth-child(3) {
+  width: 70%;
+}
+
+/* Misbehaviour 1: a picture frame that does not stay inside its
+   panel — it straddles the rule between the image and caption
+   panels. */
+.cover__hero-frame {
+  position: absolute;
+  top: 12%;
+  left: 29%;
+  width: 20%;
+  height: 40%;
+  border: 3px solid var(--course-coral);
+  transform: rotate(-3deg);
+  z-index: 2;
+}
+
+/* Misbehaviour 2: a caption line that keeps going past its row and
+   into the text panel below, crossing the rule between them. */
+.cover__hero-line--escapes {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  width: 24%;
+  height: 0.45rem;
+  border-radius: 1px;
+  background: var(--course-coral);
+  z-index: 2;
+}
+
+/* Misbehaviour 3: a small editorial marker sitting above the top
+   edge of the hero, where a page number would never normally be. */
+.cover__hero-mark {
+  position: absolute;
+  top: -8px;
+  left: 90%;
+  width: 12px;
+  height: 12px;
+  background: var(--course-mustard);
+  z-index: 2;
+}
+
+.cover__intro {
+  max-inline-size: 64ch;
 }
 
 .cover__kicker {
@@ -613,60 +771,6 @@ a.course-card:focus-visible {
 .cover__cta:focus-visible {
   outline: 2px solid var(--course-teal);
   outline-offset: 2px;
-}
-
-.cover__art {
-  position: relative;
-  min-height: 18rem;
-}
-
-@media (width >= 900px) {
-  .cover__art {
-    min-height: 24rem;
-  }
-}
-
-.cover__art-page {
-  position: absolute;
-  border-radius: 6px;
-}
-
-.cover__art-page--teal {
-  top: 6%;
-  left: 4%;
-  width: 72%;
-  height: 78%;
-  background: var(--course-teal);
-}
-
-.cover__art-page--paper {
-  top: 16%;
-  left: 22%;
-  width: 68%;
-  height: 74%;
-  background: var(--at-bg-elevated);
-  border: 1px solid var(--at-border);
-}
-
-.cover__art-frame {
-  position: absolute;
-  top: 30%;
-  left: 8%;
-  width: 56%;
-  height: 46%;
-  border: 3px solid var(--course-coral);
-  border-radius: 2px;
-  transform: rotate(-2deg);
-}
-
-.cover__art-mark {
-  position: absolute;
-  right: 10%;
-  bottom: 10%;
-  width: 14px;
-  height: 14px;
-  border-radius: 2px;
-  background: var(--course-mustard);
 }
 
 /* Sequential Week/Lecture/Assessment navigation (Previous/Next). Sits inside
