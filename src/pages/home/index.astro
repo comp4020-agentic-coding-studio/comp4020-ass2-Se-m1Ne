@@ -14,6 +14,42 @@ const progression = [
   { num: "05", step: "Integrate" },
 ];
 
+const audiences = [
+  "illustration",
+  "visual communication and design",
+  "animation",
+  "HCI",
+  "creative writing",
+  "media arts",
+  "comics and sequential art",
+  "storytelling",
+  "education",
+];
+
+const outcomes = [
+  {
+    title: "Read the rules",
+    description: "Identify visual, textual, spatial and narrative conventions in picture books.",
+  },
+  {
+    title: "Break with purpose",
+    description: "Deliberately break a convention to create a specific narrative or reader effect.",
+  },
+  {
+    title: "Design across words, pictures and pages",
+    description:
+      "Work with the relationships between words, images, sequence, page turns and the physical page.",
+  },
+  {
+    title: "Design for the reader",
+    description: "Predict and test how readers notice, interpret, navigate and respond.",
+  },
+  {
+    title: "Make a coherent misbehaving book",
+    description: "Create original work where rule-breaking supports the story rather than existing only as novelty.",
+  },
+];
+
 const entries = [
   {
     title: sessionLabels.plural,
@@ -54,6 +90,20 @@ const entries = [
     </div>
   </div>
 
+  <h2>Who is this course for?</h2>
+  <p>
+    This course is for students interested in how stories work across
+    words, images, pages and readers. It may be especially relevant to
+    students in {audiences.slice(0, -1).join(", ")}, and {audiences.at(-1)}.
+  </p>
+  <p>
+    No formal prerequisite is required, and you do not need polished
+    drawing skills. Collage, photography, typography, digital shapes, found
+    images, paper cut-outs and simple drawings are all valid ways of
+    working.
+  </p>
+
+  <h2>How the course develops</h2>
   <ol class="progression">
     {
       progression.map((p) => (
@@ -65,13 +115,27 @@ const entries = [
     }
   </ol>
   <p>
-    Every week takes one convention of picture books — a rule about pictures,
-    words, sequence, page turns, or the physical page — and follows it
-    through this fixed progression: notice the rule, break it on purpose,
-    construct something from the break, test it on a reader, then decide
-    whether to integrate it into your own work. A rule is never broken just
-    for novelty — each break has to do something to the reader.
+    Each week takes one convention of picture books — a rule about pictures,
+    words, sequence, page turns, or the physical page — and runs it through
+    this progression: notice the rule that normally makes a picture book
+    easy to read, break it on purpose, construct something from the break,
+    test how readers respond, then decide whether that particular
+    misbehaviour is worth keeping. A rule is never broken just for novelty —
+    each break has to do something to the reader.
   </p>
+
+  <h2>What will you learn?</h2>
+  <div class="card-grid">
+    {
+      outcomes.map((outcome, index) => (
+        <div class="course-card course-card--teal">
+          <span class="course-card__num">{String(index + 1).padStart(2, "0")}</span>
+          <span class="course-card__title">{outcome.title}</span>
+          <span class="course-card__desc">{outcome.description}</span>
+        </div>
+      ))
+    }
+  </div>
 
   <h2>Where to go next</h2>
   <div class="home-entries">
