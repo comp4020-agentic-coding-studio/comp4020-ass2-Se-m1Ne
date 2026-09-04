@@ -64,7 +64,7 @@ the Previous/Next navigation
 
 The first effect was not clear enough, so I repeatedly strengthened and changed
 it
-([`81199a7`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass2-Se-m1Ne/commit/81199a7)),
+([`81199a7`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass2-Se-m1Ne/commit/81199a7),
 [`8925d83...a8ce071`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass2-Se-m1Ne/compare/8925d83...a8ce071)).
 
 This made the page-turn idea more visible, but not better. The transition became
